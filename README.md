@@ -87,3 +87,105 @@
 現在の機能範囲で公開し、不具合報告を見ながら対応を検討します。
 機能追加の予定は未定です (候補: 通知制御 / アプリ別言語 /
 常駐 / 権限まわり)。
+
+---
+
+# Asrish (English)
+
+An LSPosed module to change various settings per app.
+This is the first step of a project to re-implement features "in the
+style of a certain well-known module" from scratch — one working
+feature at a time, within a self-chosen scope.
+
+## License & attribution
+- The feature set originates from App Settings by rovo89 and its
+  Apache License 2.0 fork, App Settings Reborn by BlueCat300.
+  This project is a fresh implementation of those features for
+  Android 14 and later, and contains none of their code
+- Dependencies: libxposed API (Apache License 2.0) as compileOnly,
+  libxposed service (Apache License 2.0) as implementation
+
+## Features (all per-app)
+| Feature | Options |
+|---|---|
+| Orientation | Default / Portrait / Landscape / Auto-rotate (sensor) |
+| Fullscreen | Default / Force fullscreen / Immersive (hide bars) / Prevent fullscreen |
+| Font scale | Default / 85%–130% |
+| DPI | Default / 240–640 |
+| Screenshot | Default / Allow (removes FLAG_SECURE) / Block |
+| Keep screen on | On / Off |
+| Mute | On / Off (MediaPlayer / AudioTrack / SoundPool / ToneGenerator; native playback is out of scope) |
+
+All features are implemented using only public Android APIs. Nothing
+hooks OS internals, so the module is designed to keep working across
+OS updates.
+
+## Requirements
+- Android 8.1 or later (minSdk 27)
+- LSPosed (with Modern Xposed API 102 support)
+- All features verified by the author on HyperOS 3 (Android 16)
+
+## Usage
+1. Install the APK from Releases
+2. Enable the module in LSPosed and add the apps you want to
+   configure to the scope (then reboot)
+3. Open Asrish, pick an app from the list, and configure it
+4. Settings take effect the next time the target app is launched
+   (or its screen is shown again)
+
+## Changes in v0.6.1
+- GitHub release preparation: added the LICENSE (Apache-2.0),
+  added the feature list, requirements, usage and an English
+  section to the README, and updated the module description to
+  match the current features. No functional changes
+
+## Changes in v0.6.0
+- **Added mute** (per-app, switch): replaces the volume arguments
+  of the target app's MediaPlayer / AudioTrack / SoundPool with 0,
+  and sets the volume to 0 before playback starts. For
+  ToneGenerator, the constructor's volume argument is replaced
+  with 0. All within public APIs. Native playback (AAudio /
+  OpenSL etc., such as games and built-in browser engines) does
+  not pass through the Java layer and is out of scope
+
+## Changes in v0.5.0
+- **Added DPI** (per-app): Default / 240–640 (in steps of 40).
+  Rewrites Configuration.densityDpi and the DisplayMetrics
+  density of the target app's Resources using standard APIs.
+  Applied together with font scale in a single update, keeping
+  scaledDensity consistent (so the two settings do not overwrite
+  each other)
+
+## Changes in v0.4.1
+- Changed the per-app settings screen layout: setting names are
+  left-aligned and controls (spinners / switches) right-aligned
+  on the same row, with dividers between rows. The screenshot
+  options were shortened to fit the row (Default / Allow / Block)
+- The UI follows the system language (Japanese / English): all
+  UI strings were moved to resources, with values (Japanese) and
+  values-en (English). The LSPosed module description also
+  gained an English version
+
+## Changes in v0.4.0
+- **Added font scale** (per-app): Default / 85% / 90% / 95% /
+  100% / 105% / 110% / 115% / 130%. Rewrites
+  Configuration.fontScale of the target app's Resources using
+  standard APIs, applied right after Application.attach and just
+  before Activity.onCreate (before layout inflation), and
+  re-applied onResume only when the value differs
+
+## Changes in v0.3.1
+- **Restored screenshot control** (per-app): Default / Allow
+  (removes FLAG_SECURE) / Block (sets FLAG_SECURE). The reason
+  it did not work in v0.2.0 was not the hook but the config
+  transport (ContentProvider) being unreadable from target apps;
+  the move to Remote Preferences in v0.3.0 fixed that, so the
+  feature was re-implemented. "Allow" works by intercepting
+  Window.setFlags / addFlags / setAttributes to neutralize the
+  FLAG_SECURE that the target app sets itself
+
+## Future plans
+The module is published with the current feature set; further
+work will be considered based on bug reports. No feature
+additions are currently planned (candidates: notification
+control / per-app locale / resident / permissions).
