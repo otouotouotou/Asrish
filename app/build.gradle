@@ -1,0 +1,66 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.overnight.asrish'
+    // v0.3.0〜 compileSdk 37: io.github.libxposed:service:102.0.0 の
+    // AAR メタデータが minCompileSdk 37 を要求するため。
+    // API 37 のプラットフォームは android-37.0 (マイナー版付き) として
+    // のみ提供されるため、release DSL で minorApiLevel まで指定する
+    // (単なる compileSdk 37 では platforms;android-37 を探して失敗する)。
+    // 要 AGP 9.1.1 以降。実行要件は従来通り (minSdk 27 / targetSdk 35)
+    compileSdk {
+        version = release(37) {
+            it.minorApiLevel = 0
+        }
+    }
+
+    defaultConfig {
+        applicationId 'com.overnight.asrish'
+        // LSPosed は Android 8.1 (API 27) 以降が対象
+        minSdk 27
+        targetSdk 35
+        versionCode 12
+        versionName '0.6.1'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // src/main/resources の META-INF/xposed/* を APK に確実に入れる
+    // (AGP のデフォルト packaging では META-INF が除外されうるため)
+    packaging {
+        resources {
+            merges += 'META-INF/xposed/*'
+            excludes += '**'
+        }
+    }
+}
+
+// Kotlin のコンパイル先を JVM 17 にそろえる
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
+dependencies {
+    // Modern Xposed API (libxposed) 102。
+    // 実行時はフレームワーク側から提供されるので compileOnly
+    compileOnly 'io.github.libxposed:api:102.0.0'
+
+    // v0.3.0〜 設定の受け渡しを Remote Preferences (フレームワーク経由)
+    // に移行したため、設定アプリ側は service が必要 (implementation)
+    implementation 'io.github.libxposed:service:102.0.0'
+}

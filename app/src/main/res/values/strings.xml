@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">アプリごとに画面の向き・全画面・フォント倍率・DPI・ミュートなどを設定できる LSPosed モジュール</string>
+
+    <!-- アプリ一覧画面 -->
+    <string name="app_desc">アプリごとに画面設定を変更するモジュールです。\nアプリを選んで設定してください (LSPosed で対象アプリをスコープに入れるのも忘れずに)。</string>
+    <string name="search_hint">アプリ名・パッケージ名で検索</string>
+    <string name="configured_suffix">  ● 設定あり</string>
+
+    <!-- アプリ別設定画面: 設定名 -->
+    <string name="label_orientation">画面の向き</string>
+    <string name="label_fullscreen">全画面</string>
+    <string name="label_fontsize">フォント倍率</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_screenshot">スクリーンショット</string>
+    <string name="label_screen_on">画面をONのままにする</string>
+    <string name="label_mute">ミュート</string>
+
+    <!-- 選択肢 -->
+    <string name="opt_default">デフォルト</string>
+    <string name="opt_portrait">縦固定</string>
+    <string name="opt_landscape">横固定</string>
+    <string name="opt_sensor">自動回転 (センサー)</string>
+    <string name="opt_fullscreen_on">全画面にする</string>
+    <string name="opt_fullscreen_immersive">イマーシブ (バーを隠す)</string>
+    <string name="opt_fullscreen_off">全画面にしない</string>
+    <string name="opt_font_standard">100% (標準)</string>
+    <string name="opt_allow">許可する</string>
+    <string name="opt_deny">禁止する</string>
+
+    <!-- アプリ別設定画面: その他 -->
+    <string name="settings_note">\n設定は対象アプリの次回起動 (画面の再表示) から反映されます。\nLSPosed のスコープに対象アプリが入っていることも確認してください。</string>
+    <string name="toast_saved">保存しました</string>
+    <string name="toast_save_failed">保存に失敗: %1$s: %2$s</string>
+</resources>

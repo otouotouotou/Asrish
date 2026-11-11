@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ダークテーマ: 端末のダークモードに追従する。
+         背景は AMOLED 向けの純黒 (#000000)、文字は純白ベースに調整 -->
+    <style name="Theme.Asrish" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:colorBackground">#000000</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#AAAAAA</item>
+    </style>
+</resources>

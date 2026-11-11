@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  アダプティブアイコンの前景: 調整スライダー3本 (アプリ別設定のイメージ)。
+  108dp キャンバスに白で描く。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- スライダーのレール -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M28,36 L80,36 M28,54 L80,54 M28,72 L80,72" />
+    <!-- ノブ -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M62,36 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M44,54 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,72 m-6.5,0 a6.5,6.5 0 1,0 13,0 a6.5,6.5 0 1,0 -13,0" />
+</vector>

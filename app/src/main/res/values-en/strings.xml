@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">LSPosed module to set orientation, fullscreen, font scale, DPI, mute and more per app</string>
+
+    <!-- App list -->
+    <string name="app_desc">A module to change display settings per app.\nSelect an app to configure it (and don\'t forget to add it to the LSPosed scope).</string>
+    <string name="search_hint">Search by app name or package name</string>
+    <string name="configured_suffix">  ● Configured</string>
+
+    <!-- Per-app settings: labels -->
+    <string name="label_orientation">Orientation</string>
+    <string name="label_fullscreen">Fullscreen</string>
+    <string name="label_fontsize">Font scale</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_screenshot">Screenshot</string>
+    <string name="label_screen_on">Keep screen on</string>
+    <string name="label_mute">Mute</string>
+
+    <!-- Options -->
+    <string name="opt_default">Default</string>
+    <string name="opt_portrait">Portrait</string>
+    <string name="opt_landscape">Landscape</string>
+    <string name="opt_sensor">Auto-rotate (sensor)</string>
+    <string name="opt_fullscreen_on">Force fullscreen</string>
+    <string name="opt_fullscreen_immersive">Immersive (hide bars)</string>
+    <string name="opt_fullscreen_off">Prevent fullscreen</string>
+    <string name="opt_font_standard">100% (standard)</string>
+    <string name="opt_allow">Allow</string>
+    <string name="opt_deny">Block</string>
+
+    <!-- Per-app settings: misc -->
+    <string name="settings_note">\nSettings take effect the next time the target app is launched (or its screen is shown again).\nMake sure the target app is in the LSPosed scope.</string>
+    <string name="toast_saved">Saved</string>
+    <string name="toast_save_failed">Failed to save: %1$s: %2$s</string>
+</resources>

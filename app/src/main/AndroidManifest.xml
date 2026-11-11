@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 端末内のアプリ一覧を取得するために必要 -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!-- 設定の受け渡しは Remote Preferences (LSPosed フレームワーク
+         経由) のため、WRITE_SETTINGS も自前プロバイダも不要 (v0.3.0〜)。
+         テーマは明示する: 未指定だと HyperOS 3 では標準バーが
+         コンテンツに重なって画面上部が隠れるため、NoActionBar にして
+         アプリ内タイトル + インセット調整で表示する。
+         Theme.Asrish は values / values-night で昼夜を切り替える -->
+    <application
+        android:name=".AsrishApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Asrish"
+        android:supportsRtl="true">
+
+        <!-- Modern Xposed API (libxposed) ではモジュール宣言は
+             AndroidManifest ではなく META-INF/xposed/module.prop と
+             java_init.list で行うため、ここには書かない -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".PerAppActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

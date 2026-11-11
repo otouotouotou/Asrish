@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 純黒背景でも読めるよう、ライト側より明るめに -->
+    <color name="sub_text">#AAAAAA</color>
+    <!-- 設定行の区切り線 (純黒背景向けに控えめなグレー) -->
+    <color name="divider">#262626</color>
+</resources>
