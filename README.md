@@ -38,6 +38,14 @@
 3. Asrish を開き、アプリ一覧から対象アプリを選んで設定する
 4. 設定は対象アプリの次回起動 (画面の再表示) から反映される
 
+## スクリーンショット
+アプリ別設定画面 (左: 日本語 / 右: 英語)
+
+<p>
+<img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
+<img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
+</p>
+
 ## v0.6.1 の変更点
 - GitHub 公開準備: LICENSE (Apache-2.0) を追加、README に機能一覧・
   動作環境・使い方と英語セクションを追加、モジュール説明文を
@@ -132,6 +140,14 @@ OS updates.
 3. Open Asrish, pick an app from the list, and configure it
 4. Settings take effect the next time the target app is launched
    (or its screen is shown again)
+
+## Screenshots
+The per-app settings screen (left: Japanese / right: English)
+
+<p>
+<img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
+<img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
+</p>
 
 ## Changes in v0.6.1
 - GitHub release preparation: added the LICENSE (Apache-2.0),
