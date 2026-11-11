@@ -27,7 +27,7 @@
 フックしていないため、OS のバージョンアップで壊れにくい設計です。
 
 ## 動作環境
-- Android 8.1 以降 (minSdk 27)
+- Android 8.1 以降 (minSdk 27)。※全画面機能は Android 11 以降が必要
 - LSPosed (Modern Xposed API 102 対応のもの)
 - 作者環境では HyperOS 3 (Android 16) で全機能の動作を確認済み
 
@@ -129,7 +129,7 @@ hooks OS internals, so the module is designed to keep working across
 OS updates.
 
 ## Requirements
-- Android 8.1 or later (minSdk 27)
+- Android 8.1 or later (minSdk 27). The fullscreen feature requires Android 11 or later
 - LSPosed (with Modern Xposed API 102 support)
 - All features verified by the author on HyperOS 3 (Android 16)
 
