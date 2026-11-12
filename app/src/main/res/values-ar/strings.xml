@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">وحدة LSPosed لضبط الاتجاه وملء الشاشة ومقياس الخط وDPI وأصغر عرض واللغة وكتم الصوت والاستبعاد من التطبيقات الأخيرة وغيرها لكل تطبيق</string>
+    <string name="app_desc">وحدة لتغيير إعدادات العرض لكل تطبيق.\nاختر تطبيقًا لتكوينه (ولا تنسَ إضافته إلى نطاق LSPosed).</string>
+    <string name="search_hint">البحث باسم التطبيق أو الحزمة</string>
+    <string name="configured_suffix">  ● تم الضبط</string>
+    <string name="label_orientation">الاتجاه</string>
+    <string name="label_fullscreen">ملء الشاشة</string>
+    <string name="label_fontsize">مقياس الخط</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">اللغة</string>
+    <string name="label_smallest_width">أصغر عرض</string>
+    <string name="label_screenshot">لقطة الشاشة</string>
+    <string name="label_screen_on">إبقاء الشاشة قيد التشغيل</string>
+    <string name="label_mute">كتم الصوت</string>
+    <string name="label_exclude_recents">الاستبعاد من التطبيقات الأخيرة</string>
+    <string name="opt_default">الافتراضي</string>
+    <string name="opt_portrait">عمودي ثابت</string>
+    <string name="opt_landscape">أفقي ثابت</string>
+    <string name="opt_sensor">تدوير تلقائي (المستشعر)</string>
+    <string name="opt_fullscreen_on">فرض ملء الشاشة</string>
+    <string name="opt_fullscreen_immersive">غامر (إخفاء الأشرطة)</string>
+    <string name="opt_fullscreen_off">بدون ملء الشاشة</string>
+    <string name="opt_font_standard">100% (قياسي)</string>
+    <string name="opt_allow">السماح</string>
+    <string name="opt_deny">الحظر</string>
+    <string name="settings_note">\nتُطبَّق الإعدادات عند تشغيل التطبيق الهدف في المرة التالية (أو عند ظهور شاشته مجددًا).\nتحقق أيضًا من أن التطبيق ضمن نطاق LSPosed.</string>
+    <string name="toast_saved">تم الحفظ</string>
+    <string name="toast_save_failed">فشل الحفظ: %1$s: %2$s</string>
+</resources>

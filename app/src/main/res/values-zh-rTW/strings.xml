@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">可依應用程式設定螢幕方向、全螢幕、字體縮放、DPI、最小寬度、語言、靜音、從最近使用的應用程式中排除等選項的 LSPosed 模組</string>
+    <string name="app_desc">依應用程式變更顯示設定的模組。\n請選擇一個應用程式進行設定 (別忘了在 LSPosed 中將目標應用程式加入作用域)。</string>
+    <string name="search_hint">依應用程式名稱或套件名稱搜尋</string>
+    <string name="configured_suffix">  ● 已設定</string>
+    <string name="label_orientation">螢幕方向</string>
+    <string name="label_fullscreen">全螢幕</string>
+    <string name="label_fontsize">字體縮放</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">語言</string>
+    <string name="label_smallest_width">最小寬度</string>
+    <string name="label_screenshot">螢幕截圖</string>
+    <string name="label_screen_on">保持螢幕開啟</string>
+    <string name="label_mute">靜音</string>
+    <string name="label_exclude_recents">從最近使用的應用程式中排除</string>
+    <string name="opt_default">預設</string>
+    <string name="opt_portrait">鎖定直向</string>
+    <string name="opt_landscape">鎖定橫向</string>
+    <string name="opt_sensor">自動旋轉 (感應器)</string>
+    <string name="opt_fullscreen_on">強制全螢幕</string>
+    <string name="opt_fullscreen_immersive">沉浸式 (隱藏列)</string>
+    <string name="opt_fullscreen_off">不全螢幕</string>
+    <string name="opt_font_standard">100% (標準)</string>
+    <string name="opt_allow">允許</string>
+    <string name="opt_deny">禁止</string>
+    <string name="settings_note">\n設定將在目標應用程式下次啟動 (或畫面重新顯示) 時生效。\n請確認目標應用程式已加入 LSPosed 的作用域。</string>
+    <string name="toast_saved">已儲存</string>
+    <string name="toast_save_failed">儲存失敗: %1$s: %2$s</string>
+</resources>

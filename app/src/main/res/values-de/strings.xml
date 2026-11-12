@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">LSPosed-Modul, um pro App Ausrichtung, Vollbild, Schriftgröße, DPI, Mindestbreite, Sprache, Stummschaltung, Ausschluss aus den zuletzt verwendeten Apps und mehr einzustellen</string>
+    <string name="app_desc">Ein Modul, um Anzeigeeinstellungen pro App zu ändern.\nWählen Sie eine App zum Konfigurieren (und vergessen Sie nicht, sie in den LSPosed-Geltungsbereich aufzunehmen).</string>
+    <string name="search_hint">Nach App-Name oder Paketname suchen</string>
+    <string name="configured_suffix">  ● Konfiguriert</string>
+    <string name="label_orientation">Ausrichtung</string>
+    <string name="label_fullscreen">Vollbild</string>
+    <string name="label_fontsize">Schriftgröße</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">Sprache</string>
+    <string name="label_smallest_width">Mindestbreite</string>
+    <string name="label_screenshot">Screenshot</string>
+    <string name="label_screen_on">Bildschirm an lassen</string>
+    <string name="label_mute">Stumm</string>
+    <string name="label_exclude_recents">Aus zuletzt verwendeten Apps ausschließen</string>
+    <string name="opt_default">Standard</string>
+    <string name="opt_portrait">Hochformat fest</string>
+    <string name="opt_landscape">Querformat fest</string>
+    <string name="opt_sensor">Automatisch drehen (Sensor)</string>
+    <string name="opt_fullscreen_on">Vollbild erzwingen</string>
+    <string name="opt_fullscreen_immersive">Immersiv (Leisten ausblenden)</string>
+    <string name="opt_fullscreen_off">Kein Vollbild</string>
+    <string name="opt_font_standard">100% (Standard)</string>
+    <string name="opt_allow">Erlauben</string>
+    <string name="opt_deny">Blockieren</string>
+    <string name="settings_note">\nDie Einstellungen wirken ab dem nächsten Start der Ziel-App (oder wenn ihr Bildschirm erneut angezeigt wird).\nPrüfen Sie auch, ob die Ziel-App im LSPosed-Geltungsbereich ist.</string>
+    <string name="toast_saved">Gespeichert</string>
+    <string name="toast_save_failed">Speichern fehlgeschlagen: %1$s: %2$s</string>
+</resources>

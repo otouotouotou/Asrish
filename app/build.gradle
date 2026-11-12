@@ -22,8 +22,8 @@ android {
         // LSPosed は Android 8.1 (API 27) 以降が対象
         minSdk 27
         targetSdk 35
-        versionCode 15
-        versionName '0.9.0'
+        versionCode 16
+        versionName '0.9.1'
     }
 
     buildTypes {

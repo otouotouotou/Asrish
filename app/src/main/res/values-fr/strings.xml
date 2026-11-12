@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">Module LSPosed pour régler par application l\'orientation, le plein écran, l\'échelle de police, le DPI, la largeur minimale, la langue, le mode muet, l\'exclusion des récents, etc.</string>
+    <string name="app_desc">Un module pour modifier les réglages d\'affichage par application.\nChoisissez une application à configurer (sans oublier de l\'ajouter à la portée de LSPosed).</string>
+    <string name="search_hint">Rechercher par nom d\'application ou de paquet</string>
+    <string name="configured_suffix">  ● Configuré</string>
+    <string name="label_orientation">Orientation</string>
+    <string name="label_fullscreen">Plein écran</string>
+    <string name="label_fontsize">Échelle de police</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">Langue</string>
+    <string name="label_smallest_width">Largeur minimale</string>
+    <string name="label_screenshot">Capture d\'écran</string>
+    <string name="label_screen_on">Garder l\'écran allumé</string>
+    <string name="label_mute">Muet</string>
+    <string name="label_exclude_recents">Exclure des récents</string>
+    <string name="opt_default">Par défaut</string>
+    <string name="opt_portrait">Portrait fixe</string>
+    <string name="opt_landscape">Paysage fixe</string>
+    <string name="opt_sensor">Rotation auto (capteur)</string>
+    <string name="opt_fullscreen_on">Forcer le plein écran</string>
+    <string name="opt_fullscreen_immersive">Immersif (masquer les barres)</string>
+    <string name="opt_fullscreen_off">Pas de plein écran</string>
+    <string name="opt_font_standard">100% (standard)</string>
+    <string name="opt_allow">Autoriser</string>
+    <string name="opt_deny">Bloquer</string>
+    <string name="settings_note">\nLes réglages s\'appliquent au prochain lancement de l\'application cible (ou lorsque son écran s\'affiche à nouveau).\nVérifiez aussi que l\'application est bien dans la portée de LSPosed.</string>
+    <string name="toast_saved">Enregistré</string>
+    <string name="toast_save_failed">Échec de l\'enregistrement: %1$s: %2$s</string>
+</resources>

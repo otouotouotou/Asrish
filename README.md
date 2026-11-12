@@ -1,4 +1,4 @@
-# Asrish v0.9.0
+# Asrish v0.9.1
 
 アプリごとに各種設定を変更する LSPosed モジュール。
 「某モジュールっぽい」機能を、
@@ -48,6 +48,13 @@
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.9.1 の変更点
+- **設定 UI を 10 言語対応に**: 日本語 / 英語に加えて、中国語 (简体・繁體)、
+  韓国語、スペイン語、フランス語、ドイツ語、ロシア語、アラビア語の
+  文字列リソースを追加。言語機能で選べる言語と、設定 UI の対応言語が
+  同じ顔ぶれになった (翻訳は機械生成ベース。おかしいところがあれば
+  Issue などで教えてください)
 
 ## v0.9.0 の変更点
 - **最近使ったアプリから除外を追加** (アプリ別、スイッチ): 公開 API の
@@ -174,6 +181,14 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.9.1
+- **The settings UI is now available in 10 languages**: added
+  string resources for Chinese (Simplified and Traditional),
+  Korean, Spanish, French, German, Russian and Arabic, on top of
+  Japanese and English - the same set of languages the Language
+  feature offers. The translations are machine-generated; please
+  report anything that reads oddly
 
 ## Changes in v0.9.0
 - **Added exclude from recents** (per-app, switch): uses the

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">Módulo LSPosed para ajustar por aplicación la orientación, pantalla completa, escala de fuente, DPI, ancho mínimo, idioma, silencio, exclusión de recientes y más</string>
+    <string name="app_desc">Un módulo para cambiar los ajustes de pantalla por aplicación.\nSelecciona una aplicación para configurarla (y no olvides añadirla al ámbito de LSPosed).</string>
+    <string name="search_hint">Buscar por nombre de aplicación o paquete</string>
+    <string name="configured_suffix">  ● Configurado</string>
+    <string name="label_orientation">Orientación</string>
+    <string name="label_fullscreen">Pantalla completa</string>
+    <string name="label_fontsize">Escala de fuente</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">Idioma</string>
+    <string name="label_smallest_width">Ancho mínimo</string>
+    <string name="label_screenshot">Captura de pantalla</string>
+    <string name="label_screen_on">Mantener pantalla encendida</string>
+    <string name="label_mute">Silencio</string>
+    <string name="label_exclude_recents">Excluir de recientes</string>
+    <string name="opt_default">Predeterminado</string>
+    <string name="opt_portrait">Vertical fijo</string>
+    <string name="opt_landscape">Horizontal fijo</string>
+    <string name="opt_sensor">Rotación automática (sensor)</string>
+    <string name="opt_fullscreen_on">Forzar pantalla completa</string>
+    <string name="opt_fullscreen_immersive">Inmersivo (ocultar barras)</string>
+    <string name="opt_fullscreen_off">Sin pantalla completa</string>
+    <string name="opt_font_standard">100% (estándar)</string>
+    <string name="opt_allow">Permitir</string>
+    <string name="opt_deny">Bloquear</string>
+    <string name="settings_note">\nLos ajustes se aplican la próxima vez que se inicie la aplicación (o cuando su pantalla se muestre de nuevo).\nComprueba también que la aplicación esté en el ámbito de LSPosed.</string>
+    <string name="toast_saved">Guardado</string>
+    <string name="toast_save_failed">Error al guardar: %1$s: %2$s</string>
+</resources>

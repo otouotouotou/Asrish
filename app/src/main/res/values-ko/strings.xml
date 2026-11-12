@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">앱마다 화면 방향, 전체 화면, 글꼴 배율, DPI, 최소 너비, 언어, 음소거, 최근 앱에서 제외 등을 설정할 수 있는 LSPosed 모듈</string>
+    <string name="app_desc">앱마다 화면 설정을 변경하는 모듈입니다.\n앱을 선택해 설정하세요 (LSPosed에서 대상 앱을 스코프에 넣는 것도 잊지 마세요).</string>
+    <string name="search_hint">앱 이름 또는 패키지 이름으로 검색</string>
+    <string name="configured_suffix">  ● 설정됨</string>
+    <string name="label_orientation">화면 방향</string>
+    <string name="label_fullscreen">전체 화면</string>
+    <string name="label_fontsize">글꼴 배율</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">언어</string>
+    <string name="label_smallest_width">최소 너비</string>
+    <string name="label_screenshot">스크린샷</string>
+    <string name="label_screen_on">화면 켜짐 유지</string>
+    <string name="label_mute">음소거</string>
+    <string name="label_exclude_recents">최근 앱에서 제외</string>
+    <string name="opt_default">기본값</string>
+    <string name="opt_portrait">세로 고정</string>
+    <string name="opt_landscape">가로 고정</string>
+    <string name="opt_sensor">자동 회전 (센서)</string>
+    <string name="opt_fullscreen_on">전체 화면으로</string>
+    <string name="opt_fullscreen_immersive">몰입 모드 (바 숨기기)</string>
+    <string name="opt_fullscreen_off">전체 화면 안 함</string>
+    <string name="opt_font_standard">100% (표준)</string>
+    <string name="opt_allow">허용</string>
+    <string name="opt_deny">차단</string>
+    <string name="settings_note">\n설정은 대상 앱을 다음에 실행할 때 (또는 화면이 다시 표시될 때) 적용됩니다.\n대상 앱이 LSPosed 스코프에 포함되어 있는지도 확인하세요.</string>
+    <string name="toast_saved">저장했습니다</string>
+    <string name="toast_save_failed">저장 실패: %1$s: %2$s</string>
+</resources>

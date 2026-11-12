@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asrish</string>
+    <string name="xposed_description">Модуль LSPosed для настройки по каждому приложению: ориентация, полноэкранный режим, масштаб шрифта, DPI, минимальная ширина, язык, отключение звука, исключение из недавних и др.</string>
+    <string name="app_desc">Модуль для изменения настроек экрана по приложениям.\nВыберите приложение для настройки (и не забудьте добавить его в область действия LSPosed).</string>
+    <string name="search_hint">Поиск по названию приложения или пакета</string>
+    <string name="configured_suffix">  ● Настроено</string>
+    <string name="label_orientation">Ориентация</string>
+    <string name="label_fullscreen">Полный экран</string>
+    <string name="label_fontsize">Масштаб шрифта</string>
+    <string name="label_dpi">DPI</string>
+    <string name="label_locale">Язык</string>
+    <string name="label_smallest_width">Минимальная ширина</string>
+    <string name="label_screenshot">Снимок экрана</string>
+    <string name="label_screen_on">Не выключать экран</string>
+    <string name="label_mute">Без звука</string>
+    <string name="label_exclude_recents">Исключить из недавних</string>
+    <string name="opt_default">По умолчанию</string>
+    <string name="opt_portrait">Книжная (фикс.)</string>
+    <string name="opt_landscape">Альбомная (фикс.)</string>
+    <string name="opt_sensor">Автоповорот (датчик)</string>
+    <string name="opt_fullscreen_on">Во весь экран</string>
+    <string name="opt_fullscreen_immersive">Иммерсивный (скрыть панели)</string>
+    <string name="opt_fullscreen_off">Не во весь экран</string>
+    <string name="opt_font_standard">100% (стандарт)</string>
+    <string name="opt_allow">Разрешить</string>
+    <string name="opt_deny">Запретить</string>
+    <string name="settings_note">\nНастройки применятся при следующем запуске целевого приложения (или когда его экран покажется снова).\nТакже проверьте, что приложение добавлено в область действия LSPosed.</string>
+    <string name="toast_saved">Сохранено</string>
+    <string name="toast_save_failed">Не удалось сохранить: %1$s: %2$s</string>
+</resources>
