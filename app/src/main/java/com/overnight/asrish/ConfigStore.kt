@@ -35,6 +35,29 @@ object ConfigStore {
     const val FEATURE_FONTSIZE = "fontsize"
     const val FEATURE_DPI = "dpi"
     const val FEATURE_MUTE = "mute"
+    const val FEATURE_LOCALE = "locale"
+    const val FEATURE_SMALLEST_WIDTH = "smallestwidth"
+    const val FEATURE_EXCLUDE_RECENTS = "excluderecents"
+
+    /**
+     * ロケール設定の選択肢 (BCP 47 言語タグ)。設定値 (Int) はこの
+     * リストへのインデックスで、0 = デフォルト (触らない)。
+     * 設定アプリとフックの両方がこの並びを共有するので、
+     * 途中に挿入せず、追加は必ず末尾にすること。
+     */
+    val LOCALE_TAGS = listOf(
+        "",
+        "ja",    // 日本語
+        "en",    // English
+        "zh-CN", // 中文 (简体)
+        "zh-TW", // 中文 (繁體)
+        "ko",    // 한국어
+        "es",    // Español
+        "fr",    // Français
+        "de",    // Deutsch
+        "ru",    // Русский
+        "ar"     // العربية
+    )
 
     /** Remote Preferences のグループ名 (フック側の読み取りも同じ名前) */
     const val GROUP = "asrish_config"
@@ -64,5 +87,8 @@ object ConfigStore {
             getInt(context, FEATURE_SCREENSHOT, packageName) != 0 ||
             getInt(context, FEATURE_FONTSIZE, packageName) != 0 ||
             getInt(context, FEATURE_DPI, packageName) != 0 ||
-            getInt(context, FEATURE_MUTE, packageName) != 0
+            getInt(context, FEATURE_MUTE, packageName) != 0 ||
+            getInt(context, FEATURE_LOCALE, packageName) != 0 ||
+            getInt(context, FEATURE_SMALLEST_WIDTH, packageName) != 0 ||
+            getInt(context, FEATURE_EXCLUDE_RECENTS, packageName) != 0
 }

@@ -1,4 +1,4 @@
-# Asrish v0.6.1
+# Asrish v0.9.0
 
 アプリごとに各種設定を変更する LSPosed モジュール。
 「某モジュールっぽい」機能を、
@@ -19,9 +19,12 @@
 | 全画面 | デフォルト / 全画面にする / イマーシブ (バーを隠す) / 全画面にしない |
 | フォント倍率 | デフォルト / 85%〜130% |
 | DPI | デフォルト / 240〜640 |
+| 最小幅 | デフォルト / 320〜800 |
+| 言語 | デフォルト / 日本語 / English / 中文 (简体・繁體) / 한국어 / Español / Français / Deutsch / Русский / العربية |
 | スクリーンショット | デフォルト / 許可する (FLAG_SECURE を外す) / 禁止する |
 | 画面ON維持 | ON / OFF |
 | ミュート | ON / OFF (MediaPlayer / AudioTrack / SoundPool / ToneGenerator。ネイティブ再生は対象外) |
+| 最近使ったアプリから除外 | ON / OFF |
 
 いずれも Android の公開 API の範囲で実装しています。OS の内部実装を
 フックしていないため、OS のバージョンアップで壊れにくい設計です。
@@ -45,6 +48,26 @@
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.9.0 の変更点
+- **最近使ったアプリから除外を追加** (アプリ別、スイッチ): 公開 API の
+  ActivityManager.AppTask.setExcludeFromRecents で、対象アプリの
+  タスクを履歴 (最近使ったアプリ) に表示しないようにする
+
+## v0.8.0 の変更点
+- **最小幅を追加** (アプリ別): デフォルト / 320〜800。対象アプリの
+  Resources の Configuration.smallestScreenWidthDp を書き換える
+  標準 API 方式で、sw<N>dp 修飾子のリソース選択に効く (実際の
+  画面サイズや DPI は変わらない)。フォント倍率・DPI・言語と
+  1 回の更新でまとめて適用する
+
+## v0.7.0 の変更点
+- **言語 (ロケール) を追加** (アプリ別): システム言語とは別に、
+  アプリごとに表示言語を切り替える。同じ Configuration 書き換えで
+  locales を差し替え、プロセスのデフォルトロケールも合わせる。
+  対象アプリにその言語のリソースが含まれていない場合は表示は
+  変わらない (Play の分割 APK 配信では言語リソースが別分割に
+  なることがある)
 
 ## v0.6.1 の変更点
 - GitHub 公開準備: LICENSE (Apache-2.0) を追加、README に機能一覧・
@@ -93,8 +116,8 @@
 
 ## 今後の予定
 現在の機能範囲で公開し、不具合報告を見ながら対応を検討します。
-機能追加の予定は未定です (候補: 通知制御 / アプリ別言語 /
-常駐 / 権限まわり)。
+機能追加の予定は未定です (候補: 通知制御 / ロック画面の
+上に表示 / 常駐)。
 
 ---
 
@@ -120,9 +143,12 @@ feature at a time, within a self-chosen scope.
 | Fullscreen | Default / Force fullscreen / Immersive (hide bars) / Prevent fullscreen |
 | Font scale | Default / 85%–130% |
 | DPI | Default / 240–640 |
+| Smallest width | Default / 320–800 |
+| Language | Default / Japanese / English / Chinese (Simplified, Traditional) / Korean / Spanish / French / German / Russian / Arabic |
 | Screenshot | Default / Allow (removes FLAG_SECURE) / Block |
 | Keep screen on | On / Off |
 | Mute | On / Off (MediaPlayer / AudioTrack / SoundPool / ToneGenerator; native playback is out of scope) |
+| Exclude from recents | On / Off |
 
 All features are implemented using only public Android APIs. Nothing
 hooks OS internals, so the module is designed to keep working across
@@ -148,6 +174,28 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.9.0
+- **Added exclude from recents** (per-app, switch): uses the
+  public ActivityManager.AppTask.setExcludeFromRecents API to
+  keep the target app's tasks out of the recents screen
+
+## Changes in v0.8.0
+- **Added smallest width** (per-app): Default / 320–800.
+  Rewrites Configuration.smallestScreenWidthDp of the target
+  app's Resources using standard APIs, which affects sw<N>dp
+  resource selection (the actual screen size and DPI do not
+  change). Applied together with font scale, DPI and language
+  in a single update
+
+## Changes in v0.7.0
+- **Added language (locale)** (per-app): switches the display
+  language per app, independently of the system language.
+  Rewrites the Configuration locales with the same mechanism
+  and also sets the process default locale. If the target app
+  does not contain resources for that language, the display
+  does not change (with Play split APK delivery, language
+  resources may be in a separate split)
 
 ## Changes in v0.6.1
 - GitHub release preparation: added the LICENSE (Apache-2.0),
@@ -204,4 +252,4 @@ The per-app settings screen (left: Japanese / right: English)
 The module is published with the current feature set; further
 work will be considered based on bug reports. No feature
 additions are currently planned (candidates: notification
-control / per-app locale / resident / permissions).
+control / show on lock screen / resident).

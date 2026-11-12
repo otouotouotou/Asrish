@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asrish</string>
-    <string name="xposed_description">LSPosed module to set orientation, fullscreen, font scale, DPI, mute and more per app</string>
+    <string name="xposed_description">LSPosed module to set orientation, fullscreen, font scale, DPI, smallest width, language, mute, recents exclusion and more per app</string>
 
     <!-- App list -->
     <string name="app_desc">A module to change display settings per app.\nSelect an app to configure it (and don\'t forget to add it to the LSPosed scope).</string>
@@ -13,9 +13,12 @@
     <string name="label_fullscreen">Fullscreen</string>
     <string name="label_fontsize">Font scale</string>
     <string name="label_dpi">DPI</string>
+    <string name="label_locale">Language</string>
+    <string name="label_smallest_width">Smallest width</string>
     <string name="label_screenshot">Screenshot</string>
     <string name="label_screen_on">Keep screen on</string>
     <string name="label_mute">Mute</string>
+    <string name="label_exclude_recents">Exclude from recents</string>
 
     <!-- Options -->
     <string name="opt_default">Default</string>

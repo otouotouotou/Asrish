@@ -12,6 +12,7 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import java.util.Locale
 
 /**
  * アプリ別設定画面。
@@ -104,6 +105,35 @@ class PerAppActivity : Activity() {
         ) { save(ConfigStore.FEATURE_DPI, dpiValues[it]) }))
         root.addView(divider())
 
+        // 最小幅 (smallestScreenWidthDp の絶対値を選ぶ。端末標準は約 400)
+        val swValues = listOf(0, 320, 360, 411, 480, 540, 600, 720, 800)
+        val swLabels = swValues.map {
+            if (it == 0) getString(R.string.opt_default) else it.toString()
+        }
+        val currentSw = read(ConfigStore.FEATURE_SMALLEST_WIDTH)
+        root.addView(settingRow(getString(R.string.label_smallest_width), spinner(
+            swLabels,
+            swValues.indexOf(currentSw).coerceAtLeast(0)
+        ) { save(ConfigStore.FEATURE_SMALLEST_WIDTH, swValues[it]) }))
+        root.addView(divider())
+
+        // 言語 (ロケール)。保存値は ConfigStore.LOCALE_TAGS への
+        // インデックスそのもの。表示名は各言語自身の表記にする
+        // (日本語 / English / 中文 (简体) など、リソース不要で正確)
+        val localeLabels = ConfigStore.LOCALE_TAGS.mapIndexed { index, tag ->
+            if (index == 0) {
+                getString(R.string.opt_default)
+            } else {
+                val locale = Locale.forLanguageTag(tag)
+                locale.getDisplayName(locale)
+            }
+        }
+        root.addView(settingRow(getString(R.string.label_locale), spinner(
+            localeLabels,
+            read(ConfigStore.FEATURE_LOCALE)
+        ) { save(ConfigStore.FEATURE_LOCALE, it) }))
+        root.addView(divider())
+
         // スクリーンショット (行レイアウトに合わせて選択肢は短い表記に)
         root.addView(settingRow(getString(R.string.label_screenshot), spinner(
             listOf(
@@ -133,6 +163,16 @@ class PerAppActivity : Activity() {
             }
         }
         root.addView(settingRow(getString(R.string.label_mute), mute))
+        root.addView(divider())
+
+        // 最近使ったアプリから除外
+        val excludeRecents = Switch(this).apply {
+            isChecked = read(ConfigStore.FEATURE_EXCLUDE_RECENTS) == 1
+            setOnCheckedChangeListener { _, checked ->
+                save(ConfigStore.FEATURE_EXCLUDE_RECENTS, if (checked) 1 else 0)
+            }
+        }
+        root.addView(settingRow(getString(R.string.label_exclude_recents), excludeRecents))
 
         root.addView(TextView(this).apply {
             text = getString(R.string.settings_note)

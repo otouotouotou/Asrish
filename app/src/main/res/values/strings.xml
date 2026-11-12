@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asrish</string>
-    <string name="xposed_description">アプリごとに画面の向き・全画面・フォント倍率・DPI・ミュートなどを設定できる LSPosed モジュール</string>
+    <string name="xposed_description">アプリごとに画面の向き・全画面・フォント倍率・DPI・最小幅・言語・ミュート・履歴除外などを設定できる LSPosed モジュール</string>
 
     <!-- アプリ一覧画面 -->
     <string name="app_desc">アプリごとに画面設定を変更するモジュールです。\nアプリを選んで設定してください (LSPosed で対象アプリをスコープに入れるのも忘れずに)。</string>
@@ -13,9 +13,12 @@
     <string name="label_fullscreen">全画面</string>
     <string name="label_fontsize">フォント倍率</string>
     <string name="label_dpi">DPI</string>
+    <string name="label_locale">言語</string>
+    <string name="label_smallest_width">最小幅</string>
     <string name="label_screenshot">スクリーンショット</string>
     <string name="label_screen_on">画面をONのままにする</string>
     <string name="label_mute">ミュート</string>
+    <string name="label_exclude_recents">最近使ったアプリから除外</string>
 
     <!-- 選択肢 -->
     <string name="opt_default">デフォルト</string>

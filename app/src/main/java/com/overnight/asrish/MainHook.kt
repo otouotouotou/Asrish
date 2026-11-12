@@ -1,6 +1,7 @@
 package com.overnight.asrish
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.content.pm.ActivityInfo
@@ -10,6 +11,7 @@ import android.media.MediaPlayer
 import android.media.SoundPool
 import android.media.ToneGenerator
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
@@ -19,6 +21,7 @@ import android.view.WindowManager
 import io.github.libxposed.api.XposedInterface.ExceptionMode
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam
+import java.util.Locale
 
 /**
  * Asrish — アプリ別設定モジュール。
@@ -45,6 +48,18 @@ import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam
  *    書き換える。Application.attach 直後と Activity.onCreate の
  *    直前 (レイアウト展開前) に適用し、onResume でも現在値と
  *    違う場合だけ再適用する。両設定は 1 回の更新でまとめて適用する
+ *  - ロケール (v0.7.0〜): 同じ Configuration 書き換えで locales を
+ *    差し替え、プロセスのデフォルトロケールも合わせる。対象アプリに
+ *    その言語のリソースが含まれていない場合は表示は変わらない
+ *    (Play の分割 APK 配信では言語リソースが別分割になることがある)
+ *  - 最小幅 (v0.8.0〜): 同じ Configuration 書き換えで
+ *    smallestScreenWidthDp を差し替える。sw<N>dp 修飾子の
+ *    リソース選択 (タブレット向けレイアウト等) に効くもので、
+ *    実際の画面サイズや DPI が変わるわけではない
+ *  - 最近使ったアプリから除外 (v0.9.0〜): onResume で公開 API の
+ *    ActivityManager.AppTask.setExcludeFromRecents(true) を呼ぶ。
+ *    対象アプリ自身の全タスクに設定するので、そのアプリのタスクは
+ *    どれも履歴に出なくなる
  *
  * 設定の受け渡しは Remote Preferences (LSPosed フレームワーク経由):
  * 設定アプリが XposedService 経由で書き、フックは
@@ -56,6 +71,9 @@ import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam
  *  "fontsize":    0=デフォルト, それ以外はフォント倍率のパーセント (85〜130)
  *  "dpi":         0=デフォルト, それ以外は密度 (dpi の絶対値)
  *  "mute":        0=デフォルト, 1=ミュート
+ *  "locale":      ConfigStore.LOCALE_TAGS へのインデックス (0=デフォルト)
+ *  "smallestwidth": 0=デフォルト, それ以外は最小幅 (dp の絶対値)
+ *  "excluderecents": 0=デフォルト, 1=最近使ったアプリから除外する
  *
  * ※ v0.1.3〜v0.2.0 はモジュール内蔵 SharedPreferences + 自前
  *   ContentProvider で受け渡していたが、HyperOS 3 では対象アプリ
@@ -178,6 +196,28 @@ class MainHook : XposedModule() {
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "screen-on apply failed", t)
         }
+        applyExcludeFromRecents(activity)
+    }
+
+    /**
+     * 「最近使ったアプリから除外」: 公開 API の
+     * ActivityManager.AppTask.setExcludeFromRecents(true) を使う。
+     * (Activity.setExcludeFromRecents はプラットフォーム内部には
+     * あるが公開 SDK には含まれず、直接呼ぶとコンパイルできない
+     * ことを v0.9.0 初版のビルドエラーで確認済み)
+     * 対象プロセス自身のタスク一覧を取り、全タスクに除外を設定する。
+     * 設定したタスクは履歴 (Recents) に表示されなくなる。
+     */
+    private fun applyExcludeFromRecents(activity: Activity) {
+        try {
+            if (getConfig(ConfigStore.FEATURE_EXCLUDE_RECENTS) != 1) return
+            if (activity.isFinishing) return
+            val manager = activity.getSystemService(Context.ACTIVITY_SERVICE)
+                as? ActivityManager ?: return
+            manager.appTasks.forEach { it.setExcludeFromRecents(true) }
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "exclude-from-recents apply failed", t)
+        }
     }
 
     private fun applyFullscreen(activity: Activity) {
@@ -281,17 +321,22 @@ class MainHook : XposedModule() {
     }
 
     /**
-     * フォント倍率と DPI を対象コンテキストの Resources へ適用する。
+     * フォント倍率・DPI・ロケール・最小幅を対象コンテキストの Resources へ適用する。
      * Configuration.fontScale / densityDpi と DisplayMetrics の
      * density / scaledDensity を書き換えると、以後に展開される
      * レイアウトの sp / dp 指定がその倍率・密度で描画される。
+     * ロケールは Configuration.locales を差し替え、あわせてプロセスの
+     * デフォルトロケールも設定して、日付・数値などの書式も追随させる。
      * 現在値と同じなら何もしない (無駄な再レイアウトを避ける)。
+     * 各設定は競合しないよう、必ず 1 回の更新でまとめて適用する。
      */
     private fun applyDisplayConfig(context: Context) {
         try {
             val percent = getConfig(ConfigStore.FEATURE_FONTSIZE)
             val dpi = getConfig(ConfigStore.FEATURE_DPI)
-            if (percent == 0 && dpi == 0) return
+            val localeIdx = getConfig(ConfigStore.FEATURE_LOCALE)
+            val smallestWidth = getConfig(ConfigStore.FEATURE_SMALLEST_WIDTH)
+            if (percent == 0 && dpi == 0 && localeIdx == 0 && smallestWidth == 0) return
             val resources = context.resources ?: return
             val current = resources.configuration
 
@@ -299,11 +344,30 @@ class MainHook : XposedModule() {
             val dpiTarget = if (dpi != 0) dpi else current.densityDpi
             val fontDone = kotlin.math.abs(current.fontScale - fontTarget) < 0.001f
             val dpiDone = current.densityDpi == dpiTarget
-            if (fontDone && dpiDone) return
+            val swTarget =
+                if (smallestWidth != 0) smallestWidth else current.smallestScreenWidthDp
+            val swDone = current.smallestScreenWidthDp == swTarget
+
+            // ロケールの目標値 (未設定なら null = 触らない)。
+            // 範囲外のインデックスや空タグは未設定として扱う
+            val localeTag = ConfigStore.LOCALE_TAGS.getOrNull(localeIdx).orEmpty()
+            val localeTarget = if (localeTag.isNotEmpty()) {
+                LocaleList(Locale.forLanguageTag(localeTag))
+            } else {
+                null
+            }
+            val localeDone = localeTarget == null || current.locales == localeTarget
+            if (fontDone && dpiDone && localeDone && swDone) return
 
             val config = Configuration(current)
             config.fontScale = fontTarget
             config.densityDpi = dpiTarget
+            config.smallestScreenWidthDp = swTarget
+            if (localeTarget != null) {
+                config.setLocales(localeTarget)
+                // 書式 (日付・数値・通貨など) も対象言語に追随させる
+                Locale.setDefault(localeTarget[0])
+            }
 
             val metrics = DisplayMetrics()
             metrics.setTo(resources.displayMetrics)
@@ -316,7 +380,7 @@ class MainHook : XposedModule() {
 
             @Suppress("DEPRECATION")
             resources.updateConfiguration(config, metrics)
-            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget in $targetPackage")
+            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget locale=$localeTag smallestWidth=$swTarget in $targetPackage")
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "display config apply failed", t)
         }
