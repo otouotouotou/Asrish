@@ -38,6 +38,7 @@ object ConfigStore {
     const val FEATURE_LOCALE = "locale"
     const val FEATURE_SMALLEST_WIDTH = "smallestwidth"
     const val FEATURE_EXCLUDE_RECENTS = "excluderecents"
+    const val FEATURE_SHOW_WHEN_LOCKED = "showwhenlocked"
 
     /**
      * ロケール設定の選択肢 (BCP 47 言語タグ)。設定値 (Int) はこの
@@ -90,5 +91,6 @@ object ConfigStore {
             getInt(context, FEATURE_MUTE, packageName) != 0 ||
             getInt(context, FEATURE_LOCALE, packageName) != 0 ||
             getInt(context, FEATURE_SMALLEST_WIDTH, packageName) != 0 ||
-            getInt(context, FEATURE_EXCLUDE_RECENTS, packageName) != 0
+            getInt(context, FEATURE_EXCLUDE_RECENTS, packageName) != 0 ||
+            getInt(context, FEATURE_SHOW_WHEN_LOCKED, packageName) != 0
 }

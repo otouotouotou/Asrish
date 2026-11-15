@@ -22,8 +22,8 @@ android {
         // LSPosed は Android 8.1 (API 27) 以降が対象
         minSdk 27
         targetSdk 35
-        versionCode 16
-        versionName '0.9.1'
+        versionCode 21
+        versionName '0.10.3'
     }
 
     buildTypes {
@@ -63,4 +63,12 @@ dependencies {
     // v0.3.0〜 設定の受け渡しを Remote Preferences (フレームワーク経由)
     // に移行したため、設定アプリ側は service が必要 (implementation)
     implementation 'io.github.libxposed:service:102.0.0'
+}
+
+// Android Studio が同期時に要求する内部タスク (Kotlin ビルドスクリプトの
+// モデル生成用) の受け皿。このプロジェクトは Groovy DSL 構成のため
+// 本体タスクが生成されず、同期が "Task 'prepareKotlinBuildScriptModel'
+// not found in project ':app'" で落ちることがある (v0.10.2 で発生)。
+tasks.register('prepareKotlinBuildScriptModel') {
+    description = 'Stub for Android Studio sync (Kotlin build script model)'
 }

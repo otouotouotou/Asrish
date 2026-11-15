@@ -1,4 +1,4 @@
-# Asrish v0.9.1
+# Asrish v0.10.3
 
 アプリごとに各種設定を変更する LSPosed モジュール。
 「某モジュールっぽい」機能を、
@@ -23,6 +23,7 @@
 | 言語 | デフォルト / 日本語 / English / 中文 (简体・繁體) / 한국어 / Español / Français / Deutsch / Русский / العربية |
 | スクリーンショット | デフォルト / 許可する (FLAG_SECURE を外す) / 禁止する |
 | 画面ON維持 | ON / OFF |
+| ロック画面の上に表示 | ON / OFF |
 | ミュート | ON / OFF (MediaPlayer / AudioTrack / SoundPool / ToneGenerator。ネイティブ再生は対象外) |
 | 最近使ったアプリから除外 | ON / OFF |
 
@@ -38,8 +39,8 @@
 1. Release から APK をインストール
 2. LSPosed でモジュールを有効化し、設定したいアプリをスコープに
    入れる (端末を再起動)
-3. Asrish を開き、アプリ一覧から対象アプリを選んで設定する
-4. 設定は対象アプリの次回起動 (画面の再表示) から反映される
+3. Asrish を開き、アプリ一覧から対象アプリを選んで設定し、「適用」を押す
+4. 適用した設定は対象アプリの次回起動 (画面の再表示) から反映される
 
 ## スクリーンショット
 アプリ別設定画面 (左: 日本語 / 右: 英語)
@@ -48,6 +49,25 @@
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.10.3 の変更点
+- **アプリ別設定画面を刷新**: 項目をグループ (表示 / 画面と動作 /
+  その他) ごとのカードにまとめ、変更は「適用」ボタンを押すまで
+  保存されない方式に変更した (未適用の項目には ● が付く。
+  「破棄」で適用済みの状態に戻せる)
+- 操作部品も見直した: 画面の向きはセグメント、フォント倍率 /
+  DPI / 最小幅はスライダー (数値は画面幅の中央に表示)、
+  全画面 / 言語 / スクリーンショットはドロップダウン。
+  スライダー項目には項目別の「デフォルト」ボタンを付けた
+- フォント倍率は 85%〜130% を 5% 刻みで選べるようになった
+  (120% / 125% を追加)。DPI と最小幅は 10 刻みになった
+
+## v0.10.0 の変更点
+- **ロック画面の上に表示を追加** (アプリ別、スイッチ): 公開 API の
+  Activity.setShowWhenLocked で、対象アプリをロック画面の上に
+  表示する
+- Android 11 未満では、全画面の設定行をグレーアウトして選べない
+  ようにした (全画面は Android 11 以降が必要なため)
 
 ## v0.9.1 の変更点
 - **設定 UI を 10 言語対応に**: 日本語 / 英語に加えて、中国語 (简体・繁體)、
@@ -123,8 +143,7 @@
 
 ## 今後の予定
 現在の機能範囲で公開し、不具合報告を見ながら対応を検討します。
-機能追加の予定は未定です (候補: 通知制御 / ロック画面の
-上に表示 / 常駐)。
+機能追加の予定は未定です (候補: 通知制御 / 常駐)。
 
 ---
 
@@ -154,6 +173,7 @@ feature at a time, within a self-chosen scope.
 | Language | Default / Japanese / English / Chinese (Simplified, Traditional) / Korean / Spanish / French / German / Russian / Arabic |
 | Screenshot | Default / Allow (removes FLAG_SECURE) / Block |
 | Keep screen on | On / Off |
+| Show on lock screen | On / Off |
 | Mute | On / Off (MediaPlayer / AudioTrack / SoundPool / ToneGenerator; native playback is out of scope) |
 | Exclude from recents | On / Off |
 
@@ -170,9 +190,9 @@ OS updates.
 1. Install the APK from Releases
 2. Enable the module in LSPosed and add the apps you want to
    configure to the scope (then reboot)
-3. Open Asrish, pick an app from the list, and configure it
-4. Settings take effect the next time the target app is launched
-   (or its screen is shown again)
+3. Open Asrish, pick an app from the list, configure it, and tap "Apply"
+4. Applied settings take effect the next time the target app is
+   launched (or its screen is shown again)
 
 ## Screenshots
 The per-app settings screen (left: Japanese / right: English)
@@ -181,6 +201,27 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.10.3
+- **Redesigned the per-app settings screen**: items are now
+  grouped into cards (Display / Screen & behavior / Other), and
+  changes are only saved when you tap "Apply" (changed items
+  are marked with ●, and "Discard" reverts them)
+- The controls were reworked too: orientation is a segmented
+  control, font scale / DPI / smallest width are sliders (the
+  value is shown at the center of the screen width), and
+  fullscreen / language / screenshot are dropdowns. Slider
+  items have a per-item "Default" button
+- Font scale can now be set in 5% steps from 85% to 130%
+  (120% and 125% added). DPI and smallest width now step by 10
+
+## Changes in v0.10.0
+- **Added show on lock screen** (per-app, switch): shows the
+  target app over the lock screen, using the public
+  Activity.setShowWhenLocked API
+- On Android versions below 11, the fullscreen settings row is
+  greyed out and cannot be selected (fullscreen requires
+  Android 11 or later)
 
 ## Changes in v0.9.1
 - **The settings UI is now available in 10 languages**: added
@@ -267,4 +308,4 @@ The per-app settings screen (left: Japanese / right: English)
 The module is published with the current feature set; further
 work will be considered based on bug reports. No feature
 additions are currently planned (candidates: notification
-control / show on lock screen / resident).
+control / resident).

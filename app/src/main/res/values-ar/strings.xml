@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● تم الضبط</string>
     <string name="label_orientation">الاتجاه</string>
     <string name="label_fullscreen">ملء الشاشة</string>
+    <string name="note_requires_android_11">يتطلب Android 11 أو أحدث</string>
     <string name="label_fontsize">مقياس الخط</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">اللغة</string>
     <string name="label_smallest_width">أصغر عرض</string>
     <string name="label_screenshot">لقطة الشاشة</string>
     <string name="label_screen_on">إبقاء الشاشة قيد التشغيل</string>
+    <string name="label_show_when_locked">الإظهار على شاشة القفل</string>
     <string name="label_mute">كتم الصوت</string>
     <string name="label_exclude_recents">الاستبعاد من التطبيقات الأخيرة</string>
     <string name="opt_default">الافتراضي</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">الحظر</string>
     <string name="settings_note">\nتُطبَّق الإعدادات عند تشغيل التطبيق الهدف في المرة التالية (أو عند ظهور شاشته مجددًا).\nتحقق أيضًا من أن التطبيق ضمن نطاق LSPosed.</string>
     <string name="toast_saved">تم الحفظ</string>
+    <string name="group_display">العرض</string>
+    <string name="group_screen">الشاشة والسلوك</string>
+    <string name="group_other">أخرى</string>
+    <string name="button_default">الافتراضي</string>
+    <string name="button_apply">تطبيق</string>
+    <string name="button_discard">تجاهل</string>
+    <string name="label_pending_changes">تغييرات غير مطبقة: %1$d</string>
+    <string name="label_no_changes">لا تغييرات</string>
     <string name="toast_save_failed">فشل الحفظ: %1$s: %2$s</string>
 </resources>

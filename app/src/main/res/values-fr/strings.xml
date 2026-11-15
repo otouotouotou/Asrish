@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● Configuré</string>
     <string name="label_orientation">Orientation</string>
     <string name="label_fullscreen">Plein écran</string>
+    <string name="note_requires_android_11">Nécessite Android 11 ou supérieur</string>
     <string name="label_fontsize">Échelle de police</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Langue</string>
     <string name="label_smallest_width">Largeur minimale</string>
     <string name="label_screenshot">Capture d\'écran</string>
     <string name="label_screen_on">Garder l\'écran allumé</string>
+    <string name="label_show_when_locked">Afficher sur l\'écran de verrouillage</string>
     <string name="label_mute">Muet</string>
     <string name="label_exclude_recents">Exclure des récents</string>
     <string name="opt_default">Par défaut</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">Bloquer</string>
     <string name="settings_note">\nLes réglages s\'appliquent au prochain lancement de l\'application cible (ou lorsque son écran s\'affiche à nouveau).\nVérifiez aussi que l\'application est bien dans la portée de LSPosed.</string>
     <string name="toast_saved">Enregistré</string>
+    <string name="group_display">Affichage</string>
+    <string name="group_screen">Écran et comportement</string>
+    <string name="group_other">Autre</string>
+    <string name="button_default">Par défaut</string>
+    <string name="button_apply">Appliquer</string>
+    <string name="button_discard">Ignorer</string>
+    <string name="label_pending_changes">Modifications non appliquées : %1$d</string>
+    <string name="label_no_changes">Aucune modification</string>
     <string name="toast_save_failed">Échec de l\'enregistrement: %1$s: %2$s</string>
 </resources>

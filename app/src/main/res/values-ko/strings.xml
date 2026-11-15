@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● 설정됨</string>
     <string name="label_orientation">화면 방향</string>
     <string name="label_fullscreen">전체 화면</string>
+    <string name="note_requires_android_11">Android 11 이상 필요</string>
     <string name="label_fontsize">글꼴 배율</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">언어</string>
     <string name="label_smallest_width">최소 너비</string>
     <string name="label_screenshot">스크린샷</string>
     <string name="label_screen_on">화면 켜짐 유지</string>
+    <string name="label_show_when_locked">잠금 화면에 표시</string>
     <string name="label_mute">음소거</string>
     <string name="label_exclude_recents">최근 앱에서 제외</string>
     <string name="opt_default">기본값</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">차단</string>
     <string name="settings_note">\n설정은 대상 앱을 다음에 실행할 때 (또는 화면이 다시 표시될 때) 적용됩니다.\n대상 앱이 LSPosed 스코프에 포함되어 있는지도 확인하세요.</string>
     <string name="toast_saved">저장했습니다</string>
+    <string name="group_display">표시</string>
+    <string name="group_screen">화면 및 동작</string>
+    <string name="group_other">기타</string>
+    <string name="button_default">기본</string>
+    <string name="button_apply">적용</string>
+    <string name="button_discard">취소</string>
+    <string name="label_pending_changes">적용되지 않은 변경 %1$d개</string>
+    <string name="label_no_changes">변경 없음</string>
     <string name="toast_save_failed">저장 실패: %1$s: %2$s</string>
 </resources>

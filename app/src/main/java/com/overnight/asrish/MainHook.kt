@@ -10,6 +10,7 @@ import android.media.AudioTrack
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.media.ToneGenerator
+import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
 import android.util.DisplayMetrics
@@ -60,6 +61,11 @@ import java.util.Locale
  *    ActivityManager.AppTask.setExcludeFromRecents(true) を呼ぶ。
  *    対象アプリ自身の全タスクに設定するので、そのアプリのタスクは
  *    どれも履歴に出なくなる
+ *  - ロック画面の上に表示 (v0.10.0〜): onResume で公開 API の
+ *    Activity.setShowWhenLocked(true) を呼ぶ (API 27 からある
+ *    公開 API なので直接呼べる)。ロック中にその Activity が
+ *    前面へ出たとき、ロック画面の上に表示される。
+ *    OFF (デフォルト) では何もしない
  *
  * 設定の受け渡しは Remote Preferences (LSPosed フレームワーク経由):
  * 設定アプリが XposedService 経由で書き、フックは
@@ -74,6 +80,7 @@ import java.util.Locale
  *  "locale":      ConfigStore.LOCALE_TAGS へのインデックス (0=デフォルト)
  *  "smallestwidth": 0=デフォルト, それ以外は最小幅 (dp の絶対値)
  *  "excluderecents": 0=デフォルト, 1=最近使ったアプリから除外する
+ *  "showwhenlocked": 0=デフォルト, 1=ロック画面の上に表示する
  *
  * ※ v0.1.3〜v0.2.0 はモジュール内蔵 SharedPreferences + 自前
  *   ContentProvider で受け渡していたが、HyperOS 3 では対象アプリ
@@ -197,6 +204,7 @@ class MainHook : XposedModule() {
             log(Log.WARN, TAG, "screen-on apply failed", t)
         }
         applyExcludeFromRecents(activity)
+        applyShowWhenLocked(activity)
     }
 
     /**
@@ -220,7 +228,28 @@ class MainHook : XposedModule() {
         }
     }
 
+    /**
+     * 「ロック画面の上に表示」: 公開 API の
+     * Activity.setShowWhenLocked(true) を使う (API 27〜)。
+     * ロック中にこの Activity が前面へ出たとき (通知や履歴から
+     * 起動されたときなど)、ロック画面の上に表示される。
+     * すでに前面にある状態でロックしただけでは表示は変わらない
+     * ことがある (プラットフォーム側の仕様)。
+     */
+    private fun applyShowWhenLocked(activity: Activity) {
+        try {
+            if (getConfig(ConfigStore.FEATURE_SHOW_WHEN_LOCKED) != 1) return
+            activity.setShowWhenLocked(true)
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "show-when-locked apply failed", t)
+        }
+    }
+
     private fun applyFullscreen(activity: Activity) {
+        // WindowInsetsController は API 30 (Android 11) から。
+        // 未満では全画面は対象外なので、設定が残っていても何もしない
+        // (設定画面側も同じ判定でグレーアウト済み)。
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
         try {
             val mode = getConfig(ConfigStore.FEATURE_FULLSCREEN)
             if (mode == 0) return

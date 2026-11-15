@@ -4,4 +4,8 @@
     <color name="sub_text">#AAAAAA</color>
     <!-- 設定行の区切り線 (純黒背景向けに控えめなグレー) -->
     <color name="divider">#262626</color>
+    <!-- グループカードの背景 (純黒 #000000 の上にわずかに浮かせる) -->
+    <color name="card_bg">#0D0D0D</color>
+    <!-- 未適用マーク (●) の色 (純黒背景で目立つアンバー) -->
+    <color name="pending_dot">#FFB300</color>
 </resources>

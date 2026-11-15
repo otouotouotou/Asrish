@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● 已設定</string>
     <string name="label_orientation">螢幕方向</string>
     <string name="label_fullscreen">全螢幕</string>
+    <string name="note_requires_android_11">需要 Android 11 以上</string>
     <string name="label_fontsize">字體縮放</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">語言</string>
     <string name="label_smallest_width">最小寬度</string>
     <string name="label_screenshot">螢幕截圖</string>
     <string name="label_screen_on">保持螢幕開啟</string>
+    <string name="label_show_when_locked">在鎖定畫面上顯示</string>
     <string name="label_mute">靜音</string>
     <string name="label_exclude_recents">從最近使用的應用程式中排除</string>
     <string name="opt_default">預設</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">禁止</string>
     <string name="settings_note">\n設定將在目標應用程式下次啟動 (或畫面重新顯示) 時生效。\n請確認目標應用程式已加入 LSPosed 的作用域。</string>
     <string name="toast_saved">已儲存</string>
+    <string name="group_display">顯示</string>
+    <string name="group_screen">螢幕與行為</string>
+    <string name="group_other">其他</string>
+    <string name="button_default">預設</string>
+    <string name="button_apply">套用</string>
+    <string name="button_discard">放棄</string>
+    <string name="label_pending_changes">未套用的變更 %1$d 項</string>
+    <string name="label_no_changes">無變更</string>
     <string name="toast_save_failed">儲存失敗: %1$s: %2$s</string>
 </resources>

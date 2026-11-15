@@ -4,4 +4,8 @@
     <color name="sub_text">#666666</color>
     <!-- 設定行の区切り線。ダークは values-night 側 -->
     <color name="divider">#D0D0D0</color>
+    <!-- グループカードの背景。ダークは values-night 側 -->
+    <color name="card_bg">#F6F6F6</color>
+    <!-- 未適用マーク (●) の色。ダークは values-night 側 -->
+    <color name="pending_dot">#E65100</color>
 </resources>

@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● Configurado</string>
     <string name="label_orientation">Orientación</string>
     <string name="label_fullscreen">Pantalla completa</string>
+    <string name="note_requires_android_11">Requiere Android 11 o superior</string>
     <string name="label_fontsize">Escala de fuente</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Idioma</string>
     <string name="label_smallest_width">Ancho mínimo</string>
     <string name="label_screenshot">Captura de pantalla</string>
     <string name="label_screen_on">Mantener pantalla encendida</string>
+    <string name="label_show_when_locked">Mostrar en la pantalla de bloqueo</string>
     <string name="label_mute">Silencio</string>
     <string name="label_exclude_recents">Excluir de recientes</string>
     <string name="opt_default">Predeterminado</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">Bloquear</string>
     <string name="settings_note">\nLos ajustes se aplican la próxima vez que se inicie la aplicación (o cuando su pantalla se muestre de nuevo).\nComprueba también que la aplicación esté en el ámbito de LSPosed.</string>
     <string name="toast_saved">Guardado</string>
+    <string name="group_display">Pantalla</string>
+    <string name="group_screen">Pantalla y comportamiento</string>
+    <string name="group_other">Otros</string>
+    <string name="button_default">Predeterminado</string>
+    <string name="button_apply">Aplicar</string>
+    <string name="button_discard">Descartar</string>
+    <string name="label_pending_changes">Cambios sin aplicar: %1$d</string>
+    <string name="label_no_changes">Sin cambios</string>
     <string name="toast_save_failed">Error al guardar: %1$s: %2$s</string>
 </resources>

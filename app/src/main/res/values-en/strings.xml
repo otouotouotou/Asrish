@@ -11,12 +11,14 @@
     <!-- Per-app settings: labels -->
     <string name="label_orientation">Orientation</string>
     <string name="label_fullscreen">Fullscreen</string>
+    <string name="note_requires_android_11">Requires Android 11+</string>
     <string name="label_fontsize">Font scale</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Language</string>
     <string name="label_smallest_width">Smallest width</string>
     <string name="label_screenshot">Screenshot</string>
     <string name="label_screen_on">Keep screen on</string>
+    <string name="label_show_when_locked">Show on lock screen</string>
     <string name="label_mute">Mute</string>
     <string name="label_exclude_recents">Exclude from recents</string>
 
@@ -35,5 +37,13 @@
     <!-- Per-app settings: misc -->
     <string name="settings_note">\nSettings take effect the next time the target app is launched (or its screen is shown again).\nMake sure the target app is in the LSPosed scope.</string>
     <string name="toast_saved">Saved</string>
+    <string name="group_display">Display</string>
+    <string name="group_screen">Screen &amp; behavior</string>
+    <string name="group_other">Other</string>
+    <string name="button_default">Default</string>
+    <string name="button_apply">Apply</string>
+    <string name="button_discard">Discard</string>
+    <string name="label_pending_changes">%1$d unapplied changes</string>
+    <string name="label_no_changes">No changes</string>
     <string name="toast_save_failed">Failed to save: %1$s: %2$s</string>
 </resources>

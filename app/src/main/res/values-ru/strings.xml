@@ -7,12 +7,14 @@
     <string name="configured_suffix">  ● Настроено</string>
     <string name="label_orientation">Ориентация</string>
     <string name="label_fullscreen">Полный экран</string>
+    <string name="note_requires_android_11">Требуется Android 11 или новее</string>
     <string name="label_fontsize">Масштаб шрифта</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Язык</string>
     <string name="label_smallest_width">Минимальная ширина</string>
     <string name="label_screenshot">Снимок экрана</string>
     <string name="label_screen_on">Не выключать экран</string>
+    <string name="label_show_when_locked">Показывать на экране блокировки</string>
     <string name="label_mute">Без звука</string>
     <string name="label_exclude_recents">Исключить из недавних</string>
     <string name="opt_default">По умолчанию</string>
@@ -27,5 +29,13 @@
     <string name="opt_deny">Запретить</string>
     <string name="settings_note">\nНастройки применятся при следующем запуске целевого приложения (или когда его экран покажется снова).\nТакже проверьте, что приложение добавлено в область действия LSPosed.</string>
     <string name="toast_saved">Сохранено</string>
+    <string name="group_display">Экран</string>
+    <string name="group_screen">Экран и поведение</string>
+    <string name="group_other">Прочее</string>
+    <string name="button_default">По умолчанию</string>
+    <string name="button_apply">Применить</string>
+    <string name="button_discard">Сбросить</string>
+    <string name="label_pending_changes">Неприменённых изменений: %1$d</string>
+    <string name="label_no_changes">Нет изменений</string>
     <string name="toast_save_failed">Не удалось сохранить: %1$s: %2$s</string>
 </resources>
