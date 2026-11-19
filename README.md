@@ -7,7 +7,7 @@
 ## ライセンス・出典
 - 機能セットの原典は rovo89 の App Settings と、その
   Apache License 2.0 フォークである BlueCat300 の
-  App Settings Reborn。本プロジェクトはその機能を Android 14
+  App Settings Reborn。本プロジェクトはその機能を Android 11
   以降向けに新規実装したもので、原典のコードは含まない
 - 依存ライブラリ: libxposed API (Apache License 2.0) を compileOnly、
   libxposed service (Apache License 2.0) を implementation で使用
@@ -158,7 +158,7 @@ feature at a time, within a self-chosen scope.
 - The feature set originates from App Settings by rovo89 and its
   Apache License 2.0 fork, App Settings Reborn by BlueCat300.
   This project is a fresh implementation of those features for
-  Android 14 and later, and contains none of their code
+  Android 11 and later, and contains none of their code
 - Dependencies: libxposed API (Apache License 2.0) as compileOnly,
   libxposed service (Apache License 2.0) as implementation
 
