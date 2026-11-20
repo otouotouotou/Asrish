@@ -6,7 +6,7 @@
 
 ## お知らせ: パッケージ名の変更を予定しています (事前準備のお願い)
 
-LSPosed Modules Repo への登録に向け、将来のバージョンでパッケージ名を
+LSPosed Modules Repo への登録に向け、近々のバージョンアップでパッケージ名を
 `com.overnight.asrish` から `io.github.otouotouotou.asrish` に変更する
 予定です。パッケージ名が変わると別アプリ扱いになり、設定は自動では
 引き継がれません。
