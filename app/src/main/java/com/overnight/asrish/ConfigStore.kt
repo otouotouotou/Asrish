@@ -36,6 +36,7 @@ object ConfigStore {
     const val FEATURE_DPI = "dpi"
     const val FEATURE_MUTE = "mute"
     const val FEATURE_LOCALE = "locale"
+    const val FEATURE_FORCE_LTR = "forceltr"
     const val FEATURE_SMALLEST_WIDTH = "smallestwidth"
     const val FEATURE_EXCLUDE_RECENTS = "excluderecents"
     const val FEATURE_SHOW_WHEN_LOCKED = "showwhenlocked"
@@ -90,6 +91,7 @@ object ConfigStore {
             getInt(context, FEATURE_DPI, packageName) != 0 ||
             getInt(context, FEATURE_MUTE, packageName) != 0 ||
             getInt(context, FEATURE_LOCALE, packageName) != 0 ||
+            getInt(context, FEATURE_FORCE_LTR, packageName) != 0 ||
             getInt(context, FEATURE_SMALLEST_WIDTH, packageName) != 0 ||
             getInt(context, FEATURE_EXCLUDE_RECENTS, packageName) != 0 ||
             getInt(context, FEATURE_SHOW_WHEN_LOCKED, packageName) != 0

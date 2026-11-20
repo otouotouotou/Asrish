@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">可按应用设置屏幕方向、全屏、字体缩放、DPI、最小宽度、语言、静音、从最近任务中排除等选项的 LSPosed 模块</string>
-    <string name="app_desc">按应用更改显示设置的模块。\n请选择一个应用进行设置 (别忘了在 LSPosed 中将目标应用加入作用域)。</string>
+    <string name="app_desc">按应用更改各种设置的模块。\n请选择一个应用进行设置 (别忘了在 LSPosed 中将目标应用加入作用域)。</string>
     <string name="search_hint">按应用名或包名搜索</string>
     <string name="configured_suffix">  ● 已设置</string>
     <string name="label_orientation">屏幕方向</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">字体缩放</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">语言</string>
+    <string name="label_forceltr">将布局方向固定为 LTR</string>
     <string name="label_smallest_width">最小宽度</string>
     <string name="label_screenshot">截图</string>
     <string name="label_screen_on">保持屏幕常亮</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">未应用的更改 %1$d 项</string>
     <string name="label_no_changes">无更改</string>
     <string name="toast_save_failed">保存失败: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">设置文件</string>
+    <string name="button_export">导出</string>
+    <string name="button_import">导入</string>
+    <string name="import_confirm_title">导入设置</string>
+    <string name="import_confirm_message">将当前所有设置替换为文件中的 %1$d 个应用设置？</string>
+    <string name="toast_exported">已导出</string>
+    <string name="toast_export_failed">导出失败</string>
+    <string name="toast_imported">已导入 %1$d 个应用的设置</string>
+    <string name="toast_import_failed">无法导入（不是 Asrish 设置文件）</string>
 </resources>

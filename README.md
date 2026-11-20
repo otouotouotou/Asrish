@@ -1,8 +1,24 @@
-# Asrish v0.10.3
+# Asrish v0.10.5
 
 アプリごとに各種設定を変更する LSPosed モジュール。
 「某モジュールっぽい」機能を、
 **自分で選んだ範囲で、動く機能から1つずつ新規実装**する方針の第1弾 (土台)。
+
+## お知らせ: パッケージ名の変更を予定しています (事前準備のお願い)
+
+LSPosed Modules Repo への登録に向け、将来のバージョンでパッケージ名を
+`com.overnight.asrish` から `io.github.otouotouotou.asrish` に変更する
+予定です。パッケージ名が変わると別アプリ扱いになり、設定は自動では
+引き継がれません。
+
+そこで v0.10.4 で設定ファイルの書き出し / 読み込み機能を追加しました。
+変更版が公開される前に、本バージョンで設定を「書き出し」しておいて
+ください。変更後は次の手順で設定を復元できます:
+
+1. 変更版をインストール
+2. LSPosed でモジュールを有効化し、対象アプリをスコープに入れる
+3. Asrish を開いて「読み込み」で、書き出しておいたファイルを選ぶ
+4. 再起動
 
 ## ライセンス・出典
 - 機能セットの原典は rovo89 の App Settings と、その
@@ -21,6 +37,7 @@
 | DPI | デフォルト / 240〜640 |
 | 最小幅 | デフォルト / 320〜800 |
 | 言語 | デフォルト / 日本語 / English / 中文 (简体・繁體) / 한국어 / Español / Français / Deutsch / Русский / العربية |
+| レイアウト方向をLTRに固定 | ON / OFF (言語が RTL のとき、方向だけ LTR に固定する) |
 | スクリーンショット | デフォルト / 許可する (FLAG_SECURE を外す) / 禁止する |
 | 画面ON維持 | ON / OFF |
 | ロック画面の上に表示 | ON / OFF |
@@ -49,6 +66,22 @@
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.10.5 の変更点
+- **レイアウト方向をLTRに固定を追加** (アプリ別、スイッチ): 言語が
+  RTL (アラビア語など) のアプリで、言語はそのままにレイアウトの
+  向きだけを LTR に固定する。公開 API の範囲
+  (Configuration のレイアウト方向の上書き) で実装
+- メイン画面の整理: 説明文を削除し、書き出し / 読み込みの上に
+  「設定ファイル」の見出しを追加
+
+## v0.10.4 の変更点
+- **設定ファイルの書き出し / 読み込みを追加**: メイン画面の
+  「書き出し」「読み込み」から、設定一式を JSON ファイルに
+  保存 / 復元できる (Storage Access Framework を使用)。
+  パッケージ名変更時の移行用 (お知らせ参照)。読み込みは
+  全置き換えで、確認ダイアログ付き
+- 設定画面の説明文を修正
 
 ## v0.10.3 の変更点
 - **アプリ別設定画面を刷新**: 項目をグループ (表示 / 画面と動作 /
@@ -154,6 +187,22 @@ This is the first step of a project to re-implement features "in the
 style of a certain well-known module" from scratch — one working
 feature at a time, within a self-chosen scope.
 
+## Notice: package name change planned (please prepare)
+
+For registration in the LSPosed Modules Repo, a future version will
+change the package name from `com.overnight.asrish` to
+`io.github.otouotouotou.asrish`. A different package name means a
+different app, so settings will not carry over automatically.
+
+v0.10.4 therefore adds settings export / import. Please use this
+version to export your settings before the renamed version is
+released. After switching, you can restore them as follows:
+
+1. Install the renamed version
+2. Enable the module in LSPosed and add your target apps to its scope
+3. Open Asrish and use "Import" to load the exported file
+4. Reboot
+
 ## License & attribution
 - The feature set originates from App Settings by rovo89 and its
   Apache License 2.0 fork, App Settings Reborn by BlueCat300.
@@ -171,6 +220,7 @@ feature at a time, within a self-chosen scope.
 | DPI | Default / 240–640 |
 | Smallest width | Default / 320–800 |
 | Language | Default / Japanese / English / Chinese (Simplified, Traditional) / Korean / Spanish / French / German / Russian / Arabic |
+| Force layout direction to LTR | On / Off (keeps the language, fixes the layout direction to LTR for RTL languages) |
 | Screenshot | Default / Allow (removes FLAG_SECURE) / Block |
 | Keep screen on | On / Off |
 | Show on lock screen | On / Off |
@@ -201,6 +251,23 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.10.5
+- **Added "Force layout direction to LTR"** (per-app switch): for
+  apps in an RTL language (such as Arabic), this keeps the language
+  as-is and fixes only the layout direction to LTR. Implemented
+  with public APIs only (overriding the layout direction in the
+  app's Configuration)
+- Tidied the main screen: removed the description text and added a
+  "Settings file" heading above Export / Import
+
+## Changes in v0.10.4
+- **Added settings export / import**: from "Export" / "Import" on
+  the main screen, all settings can be saved to and restored from
+  a JSON file (via the Storage Access Framework). Intended for the
+  package name change migration (see the notice above). Import
+  replaces everything and asks for confirmation first
+- Fixed the description text on the settings screen
 
 ## Changes in v0.10.3
 - **Redesigned the per-app settings screen**: items are now

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">Módulo LSPosed para ajustar por aplicación la orientación, pantalla completa, escala de fuente, DPI, ancho mínimo, idioma, silencio, exclusión de recientes y más</string>
-    <string name="app_desc">Un módulo para cambiar los ajustes de pantalla por aplicación.\nSelecciona una aplicación para configurarla (y no olvides añadirla al ámbito de LSPosed).</string>
+    <string name="app_desc">Un módulo para cambiar varios ajustes por aplicación.\nSelecciona una aplicación para configurarla (y no olvides añadirla al ámbito de LSPosed).</string>
     <string name="search_hint">Buscar por nombre de aplicación o paquete</string>
     <string name="configured_suffix">  ● Configurado</string>
     <string name="label_orientation">Orientación</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">Escala de fuente</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Idioma</string>
+    <string name="label_forceltr">Forzar la dirección de diseño a LTR</string>
     <string name="label_smallest_width">Ancho mínimo</string>
     <string name="label_screenshot">Captura de pantalla</string>
     <string name="label_screen_on">Mantener pantalla encendida</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">Cambios sin aplicar: %1$d</string>
     <string name="label_no_changes">Sin cambios</string>
     <string name="toast_save_failed">Error al guardar: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">Archivo de ajustes</string>
+    <string name="button_export">Exportar</string>
+    <string name="button_import">Importar</string>
+    <string name="import_confirm_title">Importar ajustes</string>
+    <string name="import_confirm_message">¿Reemplazar todos los ajustes actuales por los de %1$d aplicaciones del archivo?</string>
+    <string name="toast_exported">Exportado</string>
+    <string name="toast_export_failed">Error al exportar</string>
+    <string name="toast_imported">Ajustes importados para %1$d aplicaciones</string>
+    <string name="toast_import_failed">No se pudo importar (no es un archivo de ajustes de Asrish)</string>
 </resources>

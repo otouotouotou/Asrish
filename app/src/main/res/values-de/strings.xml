@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">LSPosed-Modul, um pro App Ausrichtung, Vollbild, Schriftgröße, DPI, Mindestbreite, Sprache, Stummschaltung, Ausschluss aus den zuletzt verwendeten Apps und mehr einzustellen</string>
-    <string name="app_desc">Ein Modul, um Anzeigeeinstellungen pro App zu ändern.\nWählen Sie eine App zum Konfigurieren (und vergessen Sie nicht, sie in den LSPosed-Geltungsbereich aufzunehmen).</string>
+    <string name="app_desc">Ein Modul, um verschiedene Einstellungen pro App zu ändern.\nWählen Sie eine App zum Konfigurieren (und vergessen Sie nicht, sie in den LSPosed-Geltungsbereich aufzunehmen).</string>
     <string name="search_hint">Nach App-Name oder Paketname suchen</string>
     <string name="configured_suffix">  ● Konfiguriert</string>
     <string name="label_orientation">Ausrichtung</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">Schriftgröße</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Sprache</string>
+    <string name="label_forceltr">Layoutrichtung auf LTR festlegen</string>
     <string name="label_smallest_width">Mindestbreite</string>
     <string name="label_screenshot">Screenshot</string>
     <string name="label_screen_on">Bildschirm an lassen</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">Nicht angewendete Änderungen: %1$d</string>
     <string name="label_no_changes">Keine Änderungen</string>
     <string name="toast_save_failed">Speichern fehlgeschlagen: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">Einstellungsdatei</string>
+    <string name="button_export">Exportieren</string>
+    <string name="button_import">Importieren</string>
+    <string name="import_confirm_title">Einstellungen importieren</string>
+    <string name="import_confirm_message">Alle aktuellen Einstellungen durch die Einstellungen für %1$d Apps aus der Datei ersetzen?</string>
+    <string name="toast_exported">Exportiert</string>
+    <string name="toast_export_failed">Export fehlgeschlagen</string>
+    <string name="toast_imported">Einstellungen für %1$d Apps importiert</string>
+    <string name="toast_import_failed">Import nicht möglich (keine Asrish-Einstellungsdatei)</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.media.AudioTrack
@@ -15,6 +16,7 @@ import android.os.Bundle
 import android.os.LocaleList
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowInsetsController
@@ -78,6 +80,7 @@ import java.util.Locale
  *  "dpi":         0=デフォルト, それ以外は密度 (dpi の絶対値)
  *  "mute":        0=デフォルト, 1=ミュート
  *  "locale":      ConfigStore.LOCALE_TAGS へのインデックス (0=デフォルト)
+ *  "forceltr":    0=デフォルト, 1=レイアウト方向を LTR に固定 (v0.10.5〜)
  *  "smallestwidth": 0=デフォルト, それ以外は最小幅 (dp の絶対値)
  *  "excluderecents": 0=デフォルト, 1=最近使ったアプリから除外する
  *  "showwhenlocked": 0=デフォルト, 1=ロック画面の上に表示する
@@ -98,11 +101,24 @@ class MainHook : XposedModule() {
     private var targetPackage: String = ""
 
     override fun onPackageReady(param: PackageReadyParam) {
-        if (param.packageName == OWN_PACKAGE) return
+        if (param.packageName == ownPackageName()) return
         if (!param.isFirstPackage || hooksInstalled) return
         hooksInstalled = true
         targetPackage = param.packageName
         installHooks(param.packageName)
+    }
+
+    /**
+     * 自モジュールのパッケージ名。applicationId を変更したビルドでも
+     * 追従するよう、フレームワークから実行時に取得する
+     * (文字列の直書きだと改名ビルドで自己判定が外れるため)。
+     * 取得に失敗した場合は null (自己フック防止は LSPosed の
+     * スコープ側でも効いているので、その場合は通常通り進む)。
+     */
+    private fun ownPackageName(): String? = try {
+        moduleApplicationInfo.packageName
+    } catch (t: Throwable) {
+        null
     }
 
     private fun installHooks(packageName: String) {
@@ -118,6 +134,29 @@ class MainHook : XposedModule() {
                     val result = chain.proceed()
                     applyDisplayConfig(chain.thisObject as Application)
                     result
+                }
+
+            // --- Force LTR の保険: Activity 生成時にレイアウト方向を固定 ---
+            // 方向の本命は applyDisplayConfig の Configuration 書き換えだが、
+            // アプリが独自に Context を作り直す等で方向が RTL に戻る場合に
+            // 備え、Activity の生成直前 (attachBaseContext) でも固定する。
+            // ON のときだけ作用し、OFF では素通しする
+            val attachBase = ContextWrapper::class.java.getDeclaredMethod(
+                "attachBaseContext", Context::class.java
+            )
+            hook(attachBase)
+                .setId("asrish.attachBaseContext")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    if (chain.thisObject is Activity &&
+                        getConfig(ConfigStore.FEATURE_FORCE_LTR) == 1
+                    ) {
+                        val base = chain.getArg(0) as? Context
+                        if (base != null) {
+                            return@intercept chain.proceed(arrayOf<Any>(ltrContext(base)))
+                        }
+                    }
+                    chain.proceed()
                 }
 
             // --- フォント倍率: レイアウト展開前に Activity の Resources へ適用 ---
@@ -365,7 +404,12 @@ class MainHook : XposedModule() {
             val dpi = getConfig(ConfigStore.FEATURE_DPI)
             val localeIdx = getConfig(ConfigStore.FEATURE_LOCALE)
             val smallestWidth = getConfig(ConfigStore.FEATURE_SMALLEST_WIDTH)
-            if (percent == 0 && dpi == 0 && localeIdx == 0 && smallestWidth == 0) return
+            val forceLtr = getConfig(ConfigStore.FEATURE_FORCE_LTR) == 1
+            if (percent == 0 && dpi == 0 && localeIdx == 0 && smallestWidth == 0 &&
+                !forceLtr
+            ) {
+                return
+            }
             val resources = context.resources ?: return
             val current = resources.configuration
 
@@ -386,7 +430,11 @@ class MainHook : XposedModule() {
                 null
             }
             val localeDone = localeTarget == null || current.locales == localeTarget
-            if (fontDone && dpiDone && localeDone && swDone) return
+            // Force LTR: 現在の方向が既に LTR なら追加の仕事はない。
+            // 言語を触らない場合でも、システムロケールが RTL なら効かせる
+            val dirDone = !forceLtr ||
+                current.layoutDirection == View.LAYOUT_DIRECTION_LTR
+            if (fontDone && dpiDone && localeDone && swDone && dirDone) return
 
             val config = Configuration(current)
             config.fontScale = fontTarget
@@ -396,6 +444,14 @@ class MainHook : XposedModule() {
                 config.setLocales(localeTarget)
                 // 書式 (日付・数値・通貨など) も対象言語に追随させる
                 Locale.setDefault(localeTarget[0])
+            }
+            if (forceLtr) {
+                // setLocales の後で上書きする (setLocales はロケールから
+                // 方向を再計算するため、先に書くと RTL に戻される)。
+                // layoutDirection フィールドは Kotlin からは val 扱いで
+                // 直接代入できない (API 37 スタブ) ため、公開メソッド
+                // setLayoutDirection に LTR なロケールを渡して設定する
+                config.setLayoutDirection(Locale.ENGLISH)
             }
 
             val metrics = DisplayMetrics()
@@ -409,9 +465,23 @@ class MainHook : XposedModule() {
 
             @Suppress("DEPRECATION")
             resources.updateConfiguration(config, metrics)
-            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget locale=$localeTag smallestWidth=$swTarget in $targetPackage")
+            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget locale=$localeTag smallestWidth=$swTarget forceLtr=$forceLtr in $targetPackage")
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "display config apply failed", t)
+        }
+    }
+
+    /**
+     * Force LTR 用: 渡された Context と同じ設定で、レイアウト方向だけを
+     * LTR に固定した Context を作る。失敗したら元の Context をそのまま返す。
+     */
+    private fun ltrContext(base: Context): Context {
+        return try {
+            val config = Configuration(base.resources.configuration)
+            config.setLayoutDirection(Locale.ENGLISH)
+            base.createConfigurationContext(config)
+        } catch (t: Throwable) {
+            base
         }
     }
 
@@ -575,6 +645,5 @@ class MainHook : XposedModule() {
 
     companion object {
         private const val TAG = "Asrish"
-        private const val OWN_PACKAGE = "com.overnight.asrish"
     }
 }

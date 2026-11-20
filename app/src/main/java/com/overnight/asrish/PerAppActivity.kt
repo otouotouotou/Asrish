@@ -184,6 +184,11 @@ class PerAppActivity : Activity() {
             localeLabels, ConfigStore.LOCALE_TAGS.indices.toList()
         )
 
+        // Force LTR (言語が RTL のとき方向だけ LTR に固定する)
+        displayRows += switchRow(
+            ConfigStore.FEATURE_FORCE_LTR, getString(R.string.label_forceltr)
+        )
+
         content.addView(groupCard(getString(R.string.group_display), displayRows))
 
         // --- グループ: 画面と動作 ---
@@ -712,6 +717,7 @@ class PerAppActivity : Activity() {
             ConfigStore.FEATURE_DPI,
             ConfigStore.FEATURE_SMALLEST_WIDTH,
             ConfigStore.FEATURE_LOCALE,
+            ConfigStore.FEATURE_FORCE_LTR,
             ConfigStore.FEATURE_SCREENSHOT,
             ConfigStore.FEATURE_SCREEN_ON,
             ConfigStore.FEATURE_SHOW_WHEN_LOCKED,

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">Module LSPosed pour régler par application l\'orientation, le plein écran, l\'échelle de police, le DPI, la largeur minimale, la langue, le mode muet, l\'exclusion des récents, etc.</string>
-    <string name="app_desc">Un module pour modifier les réglages d\'affichage par application.\nChoisissez une application à configurer (sans oublier de l\'ajouter à la portée de LSPosed).</string>
+    <string name="app_desc">Un module pour modifier divers réglages par application.\nChoisissez une application à configurer (sans oublier de l\'ajouter à la portée de LSPosed).</string>
     <string name="search_hint">Rechercher par nom d\'application ou de paquet</string>
     <string name="configured_suffix">  ● Configuré</string>
     <string name="label_orientation">Orientation</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">Échelle de police</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Langue</string>
+    <string name="label_forceltr">Forcer la direction de mise en page en LTR</string>
     <string name="label_smallest_width">Largeur minimale</string>
     <string name="label_screenshot">Capture d\'écran</string>
     <string name="label_screen_on">Garder l\'écran allumé</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">Modifications non appliquées : %1$d</string>
     <string name="label_no_changes">Aucune modification</string>
     <string name="toast_save_failed">Échec de l\'enregistrement: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">Fichier de paramètres</string>
+    <string name="button_export">Exporter</string>
+    <string name="button_import">Importer</string>
+    <string name="import_confirm_title">Importer les réglages</string>
+    <string name="import_confirm_message">Remplacer tous les réglages actuels par ceux de %1$d applications contenus dans le fichier ?</string>
+    <string name="toast_exported">Exporté</string>
+    <string name="toast_export_failed">Échec de l\'export</string>
+    <string name="toast_imported">Réglages importés pour %1$d applications</string>
+    <string name="toast_import_failed">Import impossible (fichier de réglages Asrish non valide)</string>
 </resources>

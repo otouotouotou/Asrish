@@ -1,6 +1,7 @@
 package com.overnight.asrish
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.Typeface
@@ -11,11 +12,13 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 
 /**
  * アプリ一覧画面。
@@ -48,11 +51,36 @@ class MainActivity : Activity() {
         }
         root.addView(title)
 
-        val desc = TextView(this).apply {
-            text = getString(R.string.app_desc)
-            setPadding(0, dp(8), 0, dp(8))
+        // --- 設定ファイルの書き出し / 読み込み (v0.10.4〜) ---
+        // Storage Access Framework を使うのでストレージ権限は不要。
+        // 説明文は置かず、見出し + ボタンの並びにする (v0.10.5〜)
+        val transferLabel = TextView(this).apply {
+            text = getString(R.string.label_settings_file)
+            textSize = 13f
+            setPadding(0, dp(12), 0, 0)
         }
-        root.addView(desc)
+        root.addView(transferLabel)
+        val transferRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, dp(4), 0, dp(4))
+        }
+        val exportButton = Button(this).apply {
+            text = getString(R.string.button_export)
+            setOnClickListener { startExport() }
+        }
+        val importButton = Button(this).apply {
+            text = getString(R.string.button_import)
+            setOnClickListener { startImport() }
+        }
+        transferRow.addView(
+            exportButton,
+            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        )
+        transferRow.addView(
+            importButton,
+            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        )
+        root.addView(transferRow)
 
         // --- 検索窓 (v0.3.0〜): アプリ名・パッケージ名で絞り込み ---
         searchBox = EditText(this).apply {
@@ -83,6 +111,75 @@ class MainActivity : Activity() {
 
         setContentView(root)
         root.requestApplyInsets()
+    }
+
+    // --- 設定ファイルの書き出し / 読み込み ---
+
+    private fun startExport() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/json"
+            putExtra(Intent.EXTRA_TITLE, "asrish-settings.json")
+        }
+        startActivityForResult(intent, REQ_EXPORT)
+    }
+
+    private fun startImport() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf("application/json", "text/plain")
+            )
+        }
+        startActivityForResult(intent, REQ_IMPORT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) return
+        val uri = data?.data ?: return
+        when (requestCode) {
+            REQ_EXPORT -> {
+                try {
+                    val json = SettingsTransfer.buildExportJson(this)
+                    val out = contentResolver.openOutputStream(uri)
+                        ?: throw IllegalStateException("openOutputStream returned null")
+                    out.use { it.write(json.toByteArray(Charsets.UTF_8)) }
+                    Toast.makeText(this, R.string.toast_exported, Toast.LENGTH_SHORT).show()
+                } catch (t: Throwable) {
+                    Toast.makeText(this, R.string.toast_export_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+            REQ_IMPORT -> {
+                val text = try {
+                    contentResolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)
+                        ?.use { it.readText() }
+                } catch (t: Throwable) {
+                    null
+                }
+                val parsed = text?.let { SettingsTransfer.parseImportJson(it) }
+                if (parsed == null) {
+                    Toast.makeText(this, R.string.toast_import_failed, Toast.LENGTH_LONG).show()
+                    return
+                }
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.import_confirm_title)
+                    .setMessage(getString(R.string.import_confirm_message, parsed.size))
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        SettingsTransfer.applyImport(this, parsed)
+                        Toast.makeText(
+                            this,
+                            getString(R.string.toast_imported, parsed.size),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        applyFilter()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
+        }
     }
 
     override fun onResume() {
@@ -180,4 +277,9 @@ class MainActivity : Activity() {
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
+
+    companion object {
+        private const val REQ_EXPORT = 1001
+        private const val REQ_IMPORT = 1002
+    }
 }

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">앱마다 화면 방향, 전체 화면, 글꼴 배율, DPI, 최소 너비, 언어, 음소거, 최근 앱에서 제외 등을 설정할 수 있는 LSPosed 모듈</string>
-    <string name="app_desc">앱마다 화면 설정을 변경하는 모듈입니다.\n앱을 선택해 설정하세요 (LSPosed에서 대상 앱을 스코프에 넣는 것도 잊지 마세요).</string>
+    <string name="app_desc">앱마다 각종 설정을 변경하는 모듈입니다.\n앱을 선택해 설정하세요 (LSPosed에서 대상 앱을 스코프에 넣는 것도 잊지 마세요).</string>
     <string name="search_hint">앱 이름 또는 패키지 이름으로 검색</string>
     <string name="configured_suffix">  ● 설정됨</string>
     <string name="label_orientation">화면 방향</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">글꼴 배율</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">언어</string>
+    <string name="label_forceltr">레이아웃 방향을 LTR로 고정</string>
     <string name="label_smallest_width">최소 너비</string>
     <string name="label_screenshot">스크린샷</string>
     <string name="label_screen_on">화면 켜짐 유지</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">적용되지 않은 변경 %1$d개</string>
     <string name="label_no_changes">변경 없음</string>
     <string name="toast_save_failed">저장 실패: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">설정 파일</string>
+    <string name="button_export">내보내기</string>
+    <string name="button_import">가져오기</string>
+    <string name="import_confirm_title">설정 가져오기</string>
+    <string name="import_confirm_message">현재 설정을 파일에 있는 %1$d개 앱의 설정으로 모두 바꿀까요?</string>
+    <string name="toast_exported">내보냈습니다</string>
+    <string name="toast_export_failed">내보내기에 실패했습니다</string>
+    <string name="toast_imported">%1$d개 앱 설정을 가져왔습니다</string>
+    <string name="toast_import_failed">가져올 수 없습니다 (Asrish 설정 파일이 아닙니다)</string>
 </resources>

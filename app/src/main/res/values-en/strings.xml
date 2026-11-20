@@ -4,7 +4,7 @@
     <string name="xposed_description">LSPosed module to set orientation, fullscreen, font scale, DPI, smallest width, language, mute, recents exclusion and more per app</string>
 
     <!-- App list -->
-    <string name="app_desc">A module to change display settings per app.\nSelect an app to configure it (and don\'t forget to add it to the LSPosed scope).</string>
+    <string name="app_desc">A module to change various settings per app.\nSelect an app to configure it (and don\'t forget to add it to the LSPosed scope).</string>
     <string name="search_hint">Search by app name or package name</string>
     <string name="configured_suffix">  ● Configured</string>
 
@@ -15,6 +15,7 @@
     <string name="label_fontsize">Font scale</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Language</string>
+    <string name="label_forceltr">Force layout direction to LTR</string>
     <string name="label_smallest_width">Smallest width</string>
     <string name="label_screenshot">Screenshot</string>
     <string name="label_screen_on">Keep screen on</string>
@@ -46,4 +47,15 @@
     <string name="label_pending_changes">%1$d unapplied changes</string>
     <string name="label_no_changes">No changes</string>
     <string name="toast_save_failed">Failed to save: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">Settings file</string>
+    <string name="button_export">Export</string>
+    <string name="button_import">Import</string>
+    <string name="import_confirm_title">Import settings</string>
+    <string name="import_confirm_message">Replace all current settings with the settings for %1$d app(s) in the file?</string>
+    <string name="toast_exported">Exported</string>
+    <string name="toast_export_failed">Export failed</string>
+    <string name="toast_imported">Imported settings for %1$d app(s)</string>
+    <string name="toast_import_failed">Could not import (not an Asrish settings file)</string>
 </resources>

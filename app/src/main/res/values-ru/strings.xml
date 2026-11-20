@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Asrish</string>
     <string name="xposed_description">Модуль LSPosed для настройки по каждому приложению: ориентация, полноэкранный режим, масштаб шрифта, DPI, минимальная ширина, язык, отключение звука, исключение из недавних и др.</string>
-    <string name="app_desc">Модуль для изменения настроек экрана по приложениям.\nВыберите приложение для настройки (и не забудьте добавить его в область действия LSPosed).</string>
+    <string name="app_desc">Модуль для изменения различных настроек по приложениям.\nВыберите приложение для настройки (и не забудьте добавить его в область действия LSPosed).</string>
     <string name="search_hint">Поиск по названию приложения или пакета</string>
     <string name="configured_suffix">  ● Настроено</string>
     <string name="label_orientation">Ориентация</string>
@@ -11,6 +11,7 @@
     <string name="label_fontsize">Масштаб шрифта</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Язык</string>
+    <string name="label_forceltr">Фиксировать направление макета LTR</string>
     <string name="label_smallest_width">Минимальная ширина</string>
     <string name="label_screenshot">Снимок экрана</string>
     <string name="label_screen_on">Не выключать экран</string>
@@ -38,4 +39,15 @@
     <string name="label_pending_changes">Неприменённых изменений: %1$d</string>
     <string name="label_no_changes">Нет изменений</string>
     <string name="toast_save_failed">Не удалось сохранить: %1$s: %2$s</string>
+
+    <!-- 設定ファイルの書き出し / 読み込み -->
+    <string name="label_settings_file">Файл настроек</string>
+    <string name="button_export">Экспорт</string>
+    <string name="button_import">Импорт</string>
+    <string name="import_confirm_title">Импорт настроек</string>
+    <string name="import_confirm_message">Заменить все текущие настройки настройками для %1$d приложений из файла?</string>
+    <string name="toast_exported">Экспортировано</string>
+    <string name="toast_export_failed">Ошибка экспорта</string>
+    <string name="toast_imported">Импортированы настройки для %1$d приложений</string>
+    <string name="toast_import_failed">Не удалось импортировать (не файл настроек Asrish)</string>
 </resources>
