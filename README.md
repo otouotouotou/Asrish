@@ -1,18 +1,18 @@
 # Asrish v0.10.5
 
-アプリごとに各種設定を変更する LSPosedモジュール。
-「某モジュールっぽい」機能を、**自分で選んだ範囲で、
+アプリごとに各種設定を変更するLSPosedモジュール。
+某モジュールっぽい機能を、**自分で選んだ範囲で、
 動く機能から1つずつ新規実装**する方針
 
 ## お知らせ: パッケージ名の変更を予定しています (事前準備のお願い)
 
 LSPosed Modules Repo への登録に向け、近々のバージョンアップでパッケージ名を
-`com.overnight.asrish` から `io.github.otouotouotou.asrish` に変更する
+`com.overnight.asrish`から`io.github.otouotouotou.asrish`に変更する
 予定です。パッケージ名が変わると別アプリ扱いになり、設定は自動では
 引き継がれません。
 
-そこで v0.10.4 で設定ファイルの書き出し / 読み込み機能を追加しました。
-変更版が公開される前に、本バージョンで設定を「書き出し」しておいて
+そこで v0.10.4 で設定ファイルの書き出し/読み込み機能を追加しました。
+変更版が公開される前に、本バージョンで設定を書き出しておいて
 ください。変更後は次の手順で設定を復元できます:
 
 1. 変更版をインストール
@@ -23,10 +23,10 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 ## ライセンス・出典
 - 機能セットの原典はrovo89のApp Settingsと、その
   Apache License 2.0 フォークであるBlueCat300の
-  App Settings Reborn。本プロジェクトはその機能を Android 11
+  App Settings Reborn。本プロジェクトはその機能をAndroid 11
   以降向けに新規実装したもので、原典のコードは含みません
-- 依存ライブラリ: libxposed API (Apache License 2.0) を compileOnly、
-  libxposed service (Apache License 2.0) を implementation で使用
+- 依存ライブラリ: libxposed API (Apache License 2.0)をcompileOnly、
+  libxposed service(Apache License 2.0)をimplementation で使用
 
 ## 機能 (全部アプリ別)
 | 機能 | 選択肢 |
@@ -50,13 +50,13 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 ## 動作環境
 - Android 11 以降
 - LSPosed (Modern Xposed API 102対応のもの)
-- 作者環境では HyperOS 3 (Android 16) で全機能の動作を確認済み
+- 作者環境では HyperOS 3(Android 16)で全機能の動作を確認済み
 
 ## 使い方
 1. ReleaseからAPKをインストール
 2. LSPosedでモジュールを有効化し、設定したいアプリをスコープに
    入れる (端末を再起動)
-3. Asrish を開き、アプリ一覧から対象アプリを選んで設定し、「適用」を押す
+3. Asrish を開き、アプリ一覧から対象アプリを選んで設定し、適用を押す
 4. 適用した設定は対象アプリの次回起動 (画面の再表示) から反映される
 
 ## スクリーンショット
@@ -137,10 +137,10 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 ## v0.6.0 の変更点
 - **ミュートを追加** (アプリ別、スイッチ): 対象アプリの
   MediaPlayer / AudioTrack / SoundPool の音量指定を 0 に
-  差し替え、再生開始時にも音量 0 を先に設定する。ToneGenerator は
-  コンストラクタの音量引数を 0 に差し替える。いずれも公開API の
-  範囲で実装。ネイティブ再生 (AAudio / OpenSL 等、ゲームや
-  ブラウザ内蔵エンジンなど) は Java 層を通らないため対象外
+  差し替え、再生開始時にも音量 0 を先に設定するToneGeneratorは
+  コンストラクタの音量引数を 0 に差し替える。いずれも公開APIの
+  範囲で実装。ネイティブ再生 (AAudio/OpenSL等、ゲームや
+  ブラウザ内蔵エンジンなど) はJava層を通らないため対象外
 
 ## v0.5.0 の変更点
 - **DPI を追加** (アプリ別): デフォルト / 240〜640 (40刻み)。
@@ -160,16 +160,16 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 
 ## v0.4.0 の変更点
 - **フォント倍率を追加** (アプリ別): デフォルト / 85% / 90% / 95% /
-  100% / 105% / 110% / 115% / 130%。対象アプリの Resources の
-  Configuration.fontScale を書き換える標準API方式で、
+  100% / 105% / 110% / 115% / 130%。対象アプリのResources
+  Configuration.fontScaleを書き換える標準API方式で、
   Application.attach直後とActivity.onCreate直前 (レイアウト
   展開前) に適用し、onResumeでも現在値と違う場合だけ再適用する
 
 ## v0.3.1 の変更点
 - **スクリーンショット制御を復活** (アプリ別): デフォルト /
-  許可する (FLAG_SECUREを外す) / 禁止する (FLAG_SECURE を付ける)。
+  許可する (FLAG_SECUREを外す) / 禁止する (FLAG_SECUREを付ける)。
   v0.2.0で動かなかった原因はフックではなく設定の受け渡し
-  (ContentProvider) が対象アプリから読めなかったことで、
+  (ContentProvider)が対象アプリから読めなかったことで、
   v0.3.0のRemote Preferences移行で解消したため再実装した。
   「許可する」は Window.setFlags / addFlags / setAttributes の
   横取りで対象アプリ自身が立てる FLAG_SECUREを無効化する
