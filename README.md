@@ -1,10 +1,12 @@
 # Asrish v0.10.7
 
+日本語 | [English](#asrish-english)
+
 アプリごとに各種設定を変更するLSPosedモジュール。
 某モジュールっぽい機能を、**自分で選んだ範囲で、
 動く機能から1つずつ新規実装**する方針
 
-XDA スレッド: https://xdaforums.com/t/module-asrish-per-app-orientation-fullscreen-font-scale-dpi-screenshot-control-keep-screen-on-mute-lsposed-modern-xposed-api-102.4808335/
+XDA スレッド: https://xdaforums.com/t/module-lsposed-asrish-per-app-orientation-fullscreen-font-scale-dpi-screenshot-control-keep-screen-on-mute.4808335/
 
 ## お知らせ: パッケージ名を変更しました
 
@@ -215,12 +217,14 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 
 # Asrish (English)
 
+[日本語](#asrish-v0107) | English
+
 An LSPosed module to change various settings per app.
 This is the first step of a project to re-implement features "in the
 style of a certain well-known module" from scratch — one working
 feature at a time, within a self-chosen scope.
 
-XDA thread: https://xdaforums.com/t/module-asrish-per-app-orientation-fullscreen-font-scale-dpi-screenshot-control-keep-screen-on-mute-lsposed-modern-xposed-api-102.4808335/
+XDA thread: https://xdaforums.com/t/module-lsposed-asrish-per-app-orientation-fullscreen-font-scale-dpi-screenshot-control-keep-screen-on-mute.4808335/
 
 ## Notice: the package name has changed
 
