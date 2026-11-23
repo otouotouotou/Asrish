@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asrish</string>
+    <string name="module_description">as you wish - per app</string>
     <string name="xposed_description">アプリごとに画面の向き・全画面・フォント倍率・DPI・最小幅・言語・ミュート・履歴除外などを設定できる LSPosed モジュール</string>
 
     <!-- アプリ一覧画面 -->

@@ -16,12 +16,14 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:description="@string/module_description"
         android:theme="@style/Theme.Asrish"
         android:supportsRtl="true">
 
         <!-- Modern Xposed API (libxposed) ではモジュール宣言は
              AndroidManifest ではなく META-INF/xposed/module.prop と
-             java_init.list で行うため、ここには書かない -->
+             java_init.list で行うため、ここには書かない。
+             一覧の説明文は application の android:description が正規 -->
 
         <activity
             android:name=".MainActivity"
