@@ -59,7 +59,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 ## 動作環境
 - Android 11 以降
 - LSPosed (Modern Xposed API 102対応のもの)
-- 作者環境では HyperOS 3(Android 16)で全機能の動作を確認済み
+- 作者環境では Xiaomi 17 Ultra HyperOS3(Android 16) 、Oneplus 7 OOS11(Android11)で全機能の動作を確認済み
 
 ## 使い方
 1. ReleaseからAPKをインストール
@@ -278,7 +278,7 @@ OS updates.
 ## Requirements
 - Android 11 or later
 - LSPosed (with Modern Xposed API 102 support)
-- All features verified by the author on HyperOS 3 (Android 16)
+- All features verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11)
 
 ## Usage
 1. Install the APK from Releases
