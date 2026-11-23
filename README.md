@@ -66,6 +66,14 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 3. Asrish を開き、アプリ一覧から対象アプリを選んで設定し、適用を押す
 4. 適用した設定は対象アプリの次回起動 (画面の再表示) から反映される
 
+## うまく動かないとき
+アプリによっては、フォントやロケールなどをアプリ側が独自に処理
+していて、Asrish の設定が効かない場合があります。切り分けには
+動作確認用の [ModuleTestTarget](https://github.com/otouotouotou/ModuleTestTarget)
+が使えます。スコープに ModuleTestTarget を入れて同じ設定を
+試して、そちらで効けばアプリ起因、効かなければ端末・環境起因の
+可能性が高いです。
+
 ## スクリーンショット
 アプリ別設定画面 (左: 日本語 / 右: 英語)
 
@@ -275,6 +283,15 @@ OS updates.
 3. Open Asrish, pick an app from the list, configure it, and tap "Apply"
 4. Applied settings take effect the next time the target app is
    launched (or its screen is shown again)
+
+## Troubleshooting
+Some apps handle things like fonts and locale on their own, so
+Asrish's settings may not take effect on them. To tell whether
+the cause is the app or your device, try
+[ModuleTestTarget](https://github.com/otouotouotou/ModuleTestTarget),
+a small test app: scope it in LSPosed and apply the same
+settings — if they work there, the cause is the target app;
+if they don't, it's likely your device / environment.
 
 ## Screenshots
 The per-app settings screen (left: Japanese / right: English)
