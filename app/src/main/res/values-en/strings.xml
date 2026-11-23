@@ -21,6 +21,12 @@
     <string name="label_screen_on">Keep screen on</string>
     <string name="label_show_when_locked">Show on lock screen</string>
     <string name="label_mute">Mute</string>
+    <string name="group_notifications">Notifications</string>
+    <string name="label_notif_ongoing">Ongoing notification</string>
+    <string name="opt_notif_force_ongoing">Make ongoing</string>
+    <string name="opt_notif_prevent_ongoing">Don\'t make ongoing</string>
+    <string name="label_notif_insistent">Insistent notifications</string>
+    <string name="label_notif_mute">Mute notifications</string>
     <string name="label_exclude_recents">Exclude from recents</string>
 
     <!-- Options -->
@@ -58,4 +64,6 @@
     <string name="toast_export_failed">Export failed</string>
     <string name="toast_imported">Imported settings for %1$d app(s)</string>
     <string name="toast_import_failed">Could not import (not an Asrish settings file)</string>
+    <string name="group_privacy">Privacy</string>
+    <string name="label_clipboard_block">Block clipboard reads</string>
 </resources>

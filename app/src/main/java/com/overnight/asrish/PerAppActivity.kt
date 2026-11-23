@@ -211,6 +211,33 @@ class PerAppActivity : Activity() {
         )
         content.addView(groupCard(getString(R.string.group_screen), screenRows))
 
+        // --- グループ: 通知 (v0.10.6〜) ---
+        val notifRows = mutableListOf<View>()
+        // 継続通知 (ドロップダウン: デフォルト / 継続にする / 継続にしない)
+        notifRows += spinnerRow(
+            ConfigStore.FEATURE_NOTIF_ONGOING, getString(R.string.label_notif_ongoing),
+            listOf(
+                getString(R.string.opt_default),
+                getString(R.string.opt_notif_force_ongoing),
+                getString(R.string.opt_notif_prevent_ongoing)
+            ),
+            listOf(0, 1, 2)
+        )
+        notifRows += switchRow(
+            ConfigStore.FEATURE_NOTIF_INSISTENT, getString(R.string.label_notif_insistent)
+        )
+        notifRows += switchRow(
+            ConfigStore.FEATURE_NOTIF_MUTE, getString(R.string.label_notif_mute)
+        )
+        content.addView(groupCard(getString(R.string.group_notifications), notifRows))
+
+        // --- グループ: プライバシー (v0.10.7〜、Asrish 独自機能) ---
+        val privacyRows = mutableListOf<View>()
+        privacyRows += switchRow(
+            ConfigStore.FEATURE_CLIPBOARD_BLOCK, getString(R.string.label_clipboard_block)
+        )
+        content.addView(groupCard(getString(R.string.group_privacy), privacyRows))
+
         // --- グループ: その他 ---
         val otherRows = mutableListOf<View>()
         otherRows += switchRow(
@@ -718,6 +745,10 @@ class PerAppActivity : Activity() {
             ConfigStore.FEATURE_SMALLEST_WIDTH,
             ConfigStore.FEATURE_LOCALE,
             ConfigStore.FEATURE_FORCE_LTR,
+            ConfigStore.FEATURE_NOTIF_ONGOING,
+            ConfigStore.FEATURE_NOTIF_INSISTENT,
+            ConfigStore.FEATURE_NOTIF_MUTE,
+            ConfigStore.FEATURE_CLIPBOARD_BLOCK,
             ConfigStore.FEATURE_SCREENSHOT,
             ConfigStore.FEATURE_SCREEN_ON,
             ConfigStore.FEATURE_SHOW_WHEN_LOCKED,

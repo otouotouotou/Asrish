@@ -1,24 +1,25 @@
-# Asrish v0.10.5
+# Asrish v0.10.7
 
 アプリごとに各種設定を変更するLSPosedモジュール。
 某モジュールっぽい機能を、**自分で選んだ範囲で、
 動く機能から1つずつ新規実装**する方針
 
-## お知らせ: パッケージ名の変更を予定しています (事前準備のお願い)
+## お知らせ: パッケージ名を変更しました
 
-LSPosed Modules Repo への登録に向け、近々のバージョンアップでパッケージ名を
-`com.overnight.asrish`から`io.github.otouotouotou.asrish`に変更する
-予定です。パッケージ名が変わると別アプリ扱いになり、設定は自動では
+LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
+`com.overnight.asrish` から `io.github.otouotouotou.asrish` に変更
+しました。パッケージ名が変わると別アプリ扱いになり、設定は自動では
 引き継がれません。
 
-そこで v0.10.4 で設定ファイルの書き出し/読み込み機能を追加しました。
-変更版が公開される前に、本バージョンで設定を書き出しておいて
-ください。変更後は次の手順で設定を復元できます:
+旧バージョンからの移行は、v0.10.5で追加した設定ファイルの
+書き出し / 読み込みを使ってください:
 
-1. 変更版をインストール
-2. LSPosedでモジュールを有効化し、対象アプリをスコープに入れる
-3. Asrishを開いて「読み込み」で、書き出しておいたファイルを選ぶ
-4. 再起動
+1. 旧バージョン (com.overnight.asrish) で設定を「書き出し」しておく
+2. 本バージョンをインストール
+3. LSPosed でモジュールを有効化し、対象アプリをスコープに入れる
+4. Asrish を開いて「読み込み」で、書き出しておいたファイルを選ぶ
+5. 旧バージョンをアンインストール
+6. 再起動
 
 ## ライセンス・出典
 - 機能セットの原典はrovo89のApp Settingsと、その
@@ -43,6 +44,10 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 | ロック画面の上に表示 | ON / OFF |
 | ミュート | ON / OFF (MediaPlayer / AudioTrack / SoundPool / ToneGenerator。ネイティブ再生は対象外) |
 | 最近使ったアプリから除外 | ON / OFF |
+| 継続通知 | デフォルト / 継続にする / 継続にしない |
+| 通知を繰り返す | ON / OFF (気づくまで音・バイブを繰り返す) |
+| 通知をミュート | ON / OFF |
+| クリップボードの読み取りをブロック | ON / OFF (そのアプリ自身がコピーした内容は読める) |
 
 いずれもAndroidの公開APIの範囲で実装しています。OSの内部実装を
 フックしていないため、OSのバージョンアップで壊れにくい設計です。
@@ -66,6 +71,24 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.10.7 の変更点
+- **パッケージ名を変更** (お知らせ参照):
+  com.overnight.asrish → io.github.otouotouotou.asrish。
+  設定は書き出し / 読み込みで移行できる
+- **通知の設定を追加** (アプリ別、設定画面に「通知」グループ):
+  継続通知 (デフォルト / 継続にする / 継続にしない)、通知を
+  繰り返す、通知をミュート。NotificationManager.notify を
+  横取りして Notification オブジェクトを書き換える方式で、
+  設定は投稿ごとに読むため対象アプリの再起動は不要。
+  ミュートは Android 11 以降の前提に合わせ、通知チャンネルの
+  登録時にも音・バイブを消す (登録済みのチャンネルは音を
+  変更できない仕様のため、新規に作られるチャンネルから有効)
+- **クリップボードの読み取りをブロックを追加**
+  アプリがクリップボードを読むと空白を返す。ただしその
+  アプリ自身がコピーした内容は、内容の指紋照合で判別して
+  読めるようにしている (アプリ内のコピー＆貼り付けを
+  壊さないため)。対象は前面にいる間の読み取り
 
 ## v0.10.5 の変更点
 - **レイアウト方向をLTRに固定を追加** (アプリ別、スイッチ): 言語が
@@ -176,7 +199,7 @@ LSPosed Modules Repo への登録に向け、近々のバージョンアップ�
 
 ## 今後の予定
 現在の機能範囲で公開し、不具合報告を見ながら対応を検討します。
-機能追加の予定は未定です (候補: 通知制御 / 常駐)。
+機能追加の予定は未定です (候補: 常駐)。
 
 ---
 
@@ -187,21 +210,22 @@ This is the first step of a project to re-implement features "in the
 style of a certain well-known module" from scratch — one working
 feature at a time, within a self-chosen scope.
 
-## Notice: package name change planned (please prepare)
+## Notice: the package name has changed
 
-For registration in the LSPosed Modules Repo, a future version will
-change the package name from `com.overnight.asrish` to
+For registration in the LSPosed Modules Repo, v0.10.7 changes the
+package name from `com.overnight.asrish` to
 `io.github.otouotouotou.asrish`. A different package name means a
 different app, so settings will not carry over automatically.
 
-v0.10.4 therefore adds settings export / import. Please use this
-version to export your settings before the renamed version is
-released. After switching, you can restore them as follows:
+To migrate from the old version, use the settings export / import
+added in v0.10.5:
 
-1. Install the renamed version
-2. Enable the module in LSPosed and add your target apps to its scope
-3. Open Asrish and use "Import" to load the exported file
-4. Reboot
+1. In the old version (com.overnight.asrish), export your settings
+2. Install this version
+3. Enable the module in LSPosed and add your target apps to its scope
+4. Open Asrish and use "Import" to load the exported file
+5. Uninstall the old version
+6. Reboot
 
 ## License & attribution
 - The feature set originates from App Settings by rovo89 and its
@@ -226,6 +250,10 @@ released. After switching, you can restore them as follows:
 | Show on lock screen | On / Off |
 | Mute | On / Off (MediaPlayer / AudioTrack / SoundPool / ToneGenerator; native playback is out of scope) |
 | Exclude from recents | On / Off |
+| Ongoing notifications | Default / Force ongoing / Prevent ongoing |
+| Insistent notifications | On / Off (repeats the sound / vibration until noticed) |
+| Mute notifications | On / Off |
+| Block clipboard reads | On / Off (content the app copied itself stays readable) |
 
 All features are implemented using only public Android APIs. Nothing
 hooks OS internals, so the module is designed to keep working across
@@ -251,6 +279,26 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.10.7
+- **Package name changed** (see the notice above):
+  com.overnight.asrish → io.github.otouotouotou.asrish.
+  Settings can be migrated with export / import
+- **Added notification settings** (per-app, a new "Notifications"
+  group on the settings screen): ongoing notifications (Default /
+  Force ongoing / Prevent ongoing), insistent notifications, and
+  mute notifications. Implemented by intercepting
+  NotificationManager.notify and rewriting the Notification
+  object; settings are read on every post, so the target app does
+  not need a restart. For Android 11 and later, mute also removes
+  the sound and vibration when a notification channel is created
+  (a registered channel's sound cannot be changed afterwards, so
+  this takes effect for newly created channels)
+- **Added "Block clipboard reads"** (per-app, an Asrish-original
+  feature): an app with this ON sees an empty clipboard. Content
+  the app copied itself stays readable, matched by a fingerprint
+  of the clip, so copy & paste inside the app keeps working.
+  Covers reads while the app is in the foreground
 
 ## Changes in v0.10.5
 - **Added "Force layout direction to LTR"** (per-app switch): for
@@ -374,5 +422,4 @@ The per-app settings screen (left: Japanese / right: English)
 ## Future plans
 The module is published with the current feature set; further
 work will be considered based on bug reports. No feature
-additions are currently planned (candidates: notification
-control / resident).
+additions are currently planned (candidate: resident in memory).

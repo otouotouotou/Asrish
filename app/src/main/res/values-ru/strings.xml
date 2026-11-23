@@ -17,6 +17,12 @@
     <string name="label_screen_on">Не выключать экран</string>
     <string name="label_show_when_locked">Показывать на экране блокировки</string>
     <string name="label_mute">Без звука</string>
+    <string name="group_notifications">Уведомления</string>
+    <string name="label_notif_ongoing">Постоянное уведомление</string>
+    <string name="opt_notif_force_ongoing">Сделать постоянным</string>
+    <string name="opt_notif_prevent_ongoing">Не делать постоянным</string>
+    <string name="label_notif_insistent">Настойчивые уведомления</string>
+    <string name="label_notif_mute">Отключить звук уведомлений</string>
     <string name="label_exclude_recents">Исключить из недавних</string>
     <string name="opt_default">По умолчанию</string>
     <string name="opt_portrait">Книжная (фикс.)</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">Ошибка экспорта</string>
     <string name="toast_imported">Импортированы настройки для %1$d приложений</string>
     <string name="toast_import_failed">Не удалось импортировать (не файл настроек Asrish)</string>
+    <string name="group_privacy">Конфиденциальность</string>
+    <string name="label_clipboard_block">Блокировать чтение буфера обмена</string>
 </resources>

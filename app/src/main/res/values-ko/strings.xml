@@ -17,6 +17,12 @@
     <string name="label_screen_on">화면 켜짐 유지</string>
     <string name="label_show_when_locked">잠금 화면에 표시</string>
     <string name="label_mute">음소거</string>
+    <string name="group_notifications">알림</string>
+    <string name="label_notif_ongoing">계속 표시 알림</string>
+    <string name="opt_notif_force_ongoing">계속 표시로 설정</string>
+    <string name="opt_notif_prevent_ongoing">계속 표시 안 함</string>
+    <string name="label_notif_insistent">반복 알림</string>
+    <string name="label_notif_mute">알림 음소거</string>
     <string name="label_exclude_recents">최근 앱에서 제외</string>
     <string name="opt_default">기본값</string>
     <string name="opt_portrait">세로 고정</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">내보내기에 실패했습니다</string>
     <string name="toast_imported">%1$d개 앱 설정을 가져왔습니다</string>
     <string name="toast_import_failed">가져올 수 없습니다 (Asrish 설정 파일이 아닙니다)</string>
+    <string name="group_privacy">개인정보 보호</string>
+    <string name="label_clipboard_block">클립보드 읽기 차단</string>
 </resources>

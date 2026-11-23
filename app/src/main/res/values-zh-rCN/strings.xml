@@ -17,6 +17,12 @@
     <string name="label_screen_on">保持屏幕常亮</string>
     <string name="label_show_when_locked">在锁屏上显示</string>
     <string name="label_mute">静音</string>
+    <string name="group_notifications">通知</string>
+    <string name="label_notif_ongoing">常驻通知</string>
+    <string name="opt_notif_force_ongoing">设为常驻</string>
+    <string name="opt_notif_prevent_ongoing">不设为常驻</string>
+    <string name="label_notif_insistent">持续提醒通知</string>
+    <string name="label_notif_mute">静默通知</string>
     <string name="label_exclude_recents">从最近任务中排除</string>
     <string name="opt_default">默认</string>
     <string name="opt_portrait">竖屏锁定</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">导出失败</string>
     <string name="toast_imported">已导入 %1$d 个应用的设置</string>
     <string name="toast_import_failed">无法导入（不是 Asrish 设置文件）</string>
+    <string name="group_privacy">隐私</string>
+    <string name="label_clipboard_block">阻止读取剪贴板</string>
 </resources>

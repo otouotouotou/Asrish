@@ -17,6 +17,12 @@
     <string name="label_screen_on">Garder l\'écran allumé</string>
     <string name="label_show_when_locked">Afficher sur l\'écran de verrouillage</string>
     <string name="label_mute">Muet</string>
+    <string name="group_notifications">Notifications</string>
+    <string name="label_notif_ongoing">Notification persistante</string>
+    <string name="opt_notif_force_ongoing">Rendre persistante</string>
+    <string name="opt_notif_prevent_ongoing">Ne pas rendre persistante</string>
+    <string name="label_notif_insistent">Notifications insistantes</string>
+    <string name="label_notif_mute">Couper le son des notifications</string>
     <string name="label_exclude_recents">Exclure des récents</string>
     <string name="opt_default">Par défaut</string>
     <string name="opt_portrait">Portrait fixe</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">Échec de l\'export</string>
     <string name="toast_imported">Réglages importés pour %1$d applications</string>
     <string name="toast_import_failed">Import impossible (fichier de réglages Asrish non valide)</string>
+    <string name="group_privacy">Confidentialité</string>
+    <string name="label_clipboard_block">Bloquer la lecture du presse-papiers</string>
 </resources>

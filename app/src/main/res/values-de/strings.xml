@@ -17,6 +17,12 @@
     <string name="label_screen_on">Bildschirm an lassen</string>
     <string name="label_show_when_locked">Auf dem Sperrbildschirm anzeigen</string>
     <string name="label_mute">Stumm</string>
+    <string name="group_notifications">Benachrichtigungen</string>
+    <string name="label_notif_ongoing">Fortlaufende Benachrichtigung</string>
+    <string name="opt_notif_force_ongoing">Fortlaufend machen</string>
+    <string name="opt_notif_prevent_ongoing">Nicht fortlaufend</string>
+    <string name="label_notif_insistent">Wiederholte Benachrichtigung</string>
+    <string name="label_notif_mute">Benachrichtigungen stummschalten</string>
     <string name="label_exclude_recents">Aus zuletzt verwendeten Apps ausschließen</string>
     <string name="opt_default">Standard</string>
     <string name="opt_portrait">Hochformat fest</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">Export fehlgeschlagen</string>
     <string name="toast_imported">Einstellungen für %1$d Apps importiert</string>
     <string name="toast_import_failed">Import nicht möglich (keine Asrish-Einstellungsdatei)</string>
+    <string name="group_privacy">Datenschutz</string>
+    <string name="label_clipboard_block">Lesen der Zwischenablage blockieren</string>
 </resources>

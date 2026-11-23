@@ -3,6 +3,11 @@ package com.overnight.asrish
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
@@ -81,6 +86,10 @@ import java.util.Locale
  *  "mute":        0=デフォルト, 1=ミュート
  *  "locale":      ConfigStore.LOCALE_TAGS へのインデックス (0=デフォルト)
  *  "forceltr":    0=デフォルト, 1=レイアウト方向を LTR に固定 (v0.10.5〜)
+ *  "notifongoing": 0=デフォルト, 1=継続通知にする, 2=継続通知にしない (v0.10.6〜)
+ *  "notifinsistent": 0=デフォルト, 1=通知を繰り返す (FLAG_INSISTENT) (v0.10.6〜)
+ *  "notifmute":   0=デフォルト, 1=通知の音・バイブを消す (v0.10.6〜)
+ *  "clipboardblock": 0=デフォルト, 1=クリップボードの読み取りをブロック (v0.10.7〜、独自機能)
  *  "smallestwidth": 0=デフォルト, それ以外は最小幅 (dp の絶対値)
  *  "excluderecents": 0=デフォルト, 1=最近使ったアプリから除外する
  *  "showwhenlocked": 0=デフォルト, 1=ロック画面の上に表示する
@@ -99,6 +108,10 @@ class MainHook : XposedModule() {
 
     private var hooksInstalled = false
     private var targetPackage: String = ""
+
+    /** 対象アプリ自身が最後にコピーした内容の指紋 (クリップボードブロック用) */
+    @Volatile
+    private var ownClipFingerprint: String? = null
 
     override fun onPackageReady(param: PackageReadyParam) {
         if (param.packageName == ownPackageName()) return
@@ -217,6 +230,8 @@ class MainHook : XposedModule() {
 
             installWindowFlagHooks()
             installAudioHooks()
+            installNotificationHooks()
+            installClipboardHooks()
 
             log(Log.INFO, TAG, "hooks installed in $packageName")
         } catch (t: Throwable) {
@@ -486,6 +501,223 @@ class MainHook : XposedModule() {
     }
 
     private fun isMuted(): Boolean = getConfig(ConfigStore.FEATURE_MUTE) == 1
+
+    /**
+     * 通知系フック (v0.10.6〜)。NotificationManager.notify を横取りし、
+     * 投稿される Notification オブジェクトのフラグと音指定を書き換える。
+     * いずれも公開 API の範囲 (Notification の公開フィールドの操作)。
+     * サポート下限の Android 11 以降では、音・バイブの決定権は通知
+     * オブジェクトではなくチャンネル側にある。そのためミュートは
+     * チャンネル作成 (createNotificationChannel) も横取りし、登録前に
+     * 音とバイブを消す。既に登録済みのチャンネルは、対象アプリ自身
+     * でも音・バイブを変更できないというプラットフォームの規則が
+     * あるため対象外 (新規作成されるチャンネルから効く)。
+     */
+    private fun installNotificationHooks() {
+        try {
+            val notifySimple = NotificationManager::class.java.getDeclaredMethod(
+                "notify", Int::class.javaPrimitiveType!!, Notification::class.java
+            )
+            hook(notifySimple)
+                .setId("asrish.notifySimple")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    (chain.getArg(1) as? Notification)?.let { applyNotificationSettings(it) }
+                    chain.proceed()
+                }
+
+            val notifyTagged = NotificationManager::class.java.getDeclaredMethod(
+                "notify", String::class.java, Int::class.javaPrimitiveType!!,
+                Notification::class.java
+            )
+            hook(notifyTagged)
+                .setId("asrish.notifyTagged")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    (chain.getArg(2) as? Notification)?.let { applyNotificationSettings(it) }
+                    chain.proceed()
+                }
+
+            // --- ミュート用: チャンネル登録前に音・バイブを消す ---
+            val createChannel = NotificationManager::class.java.getDeclaredMethod(
+                "createNotificationChannel", NotificationChannel::class.java
+            )
+            hook(createChannel)
+                .setId("asrish.createChannel")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    (chain.getArg(0) as? NotificationChannel)?.let { applyChannelMute(it) }
+                    chain.proceed()
+                }
+
+            val createChannels = NotificationManager::class.java.getDeclaredMethod(
+                "createNotificationChannels", List::class.java
+            )
+            hook(createChannels)
+                .setId("asrish.createChannels")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    (chain.getArg(0) as? List<*>)?.forEach {
+                        (it as? NotificationChannel)?.let { ch -> applyChannelMute(ch) }
+                    }
+                    chain.proceed()
+                }
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "notification hooks failed", t)
+        }
+    }
+
+    /** ミュート ON のとき、登録前のチャンネルの音・バイブを消す。 */
+    private fun applyChannelMute(channel: NotificationChannel) {
+        try {
+            if (getConfig(ConfigStore.FEATURE_NOTIF_MUTE) != 1) return
+            channel.setSound(null, null)
+            channel.enableVibration(false)
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "channel mute apply failed", t)
+        }
+    }
+
+    /**
+     * クリップボード読み取りブロック (v0.10.7〜、Asrish 独自機能)。
+     * ON のとき、対象アプリがクリップボードを読むと「空」を返す
+     * (getPrimaryClip → null、hasPrimaryClip → false、
+     * getPrimaryClipDescription → null)。
+     * ただしアプリ自身がコピーした内容は読めるようにする
+     * (全面ブロックだとアプリ内のコピー＆貼り付けまで壊れるため)。
+     * 自分が書いたかどうかは、setPrimaryClip を横取りして記録した
+     * 内容の指紋 (MIME 種別 + 件数 + 先頭アイテム) で判定する。
+     * 設定は読み取りのたびに確認するので、対象アプリの再起動は不要。
+     * 照合のため内部では実物を一度読むが、アプリ側には渡らない。
+     */
+    private fun installClipboardHooks() {
+        try {
+            val cmClass = ClipboardManager::class.java
+
+            val setClip = cmClass.getDeclaredMethod(
+                "setPrimaryClip", ClipData::class.java
+            )
+            hook(setClip)
+                .setId("asrish.clipSet")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    (chain.getArg(0) as? ClipData)?.let {
+                        ownClipFingerprint = clipFingerprint(it)
+                    }
+                    chain.proceed()
+                }
+
+            val clearClip = cmClass.getDeclaredMethod("clearPrimaryClip")
+            hook(clearClip)
+                .setId("asrish.clipClear")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    ownClipFingerprint = null
+                    chain.proceed()
+                }
+
+            val getClip = cmClass.getDeclaredMethod("getPrimaryClip")
+            hook(getClip)
+                .setId("asrish.clipGet")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    if (getConfig(ConfigStore.FEATURE_CLIPBOARD_BLOCK) != 1) {
+                        return@intercept chain.proceed()
+                    }
+                    val real = chain.proceed() as? ClipData
+                    if (real != null && isOwnClip(real)) real else null
+                }
+
+            val hasClip = cmClass.getDeclaredMethod("hasPrimaryClip")
+            hook(hasClip)
+                .setId("asrish.clipHas")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    if (getConfig(ConfigStore.FEATURE_CLIPBOARD_BLOCK) != 1) {
+                        return@intercept chain.proceed()
+                    }
+                    // ゲート済みの getPrimaryClip (上のフック) で判定する
+                    val manager = chain.thisObject as? ClipboardManager
+                    val visible = try {
+                        manager?.primaryClip
+                    } catch (t: Throwable) {
+                        null
+                    }
+                    visible != null
+                }
+
+            val getDesc = cmClass.getDeclaredMethod("getPrimaryClipDescription")
+            hook(getDesc)
+                .setId("asrish.clipDesc")
+                .setExceptionMode(ExceptionMode.PROTECTIVE)
+                .intercept { chain ->
+                    if (getConfig(ConfigStore.FEATURE_CLIPBOARD_BLOCK) != 1) {
+                        return@intercept chain.proceed()
+                    }
+                    val manager = chain.thisObject as? ClipboardManager
+                    val visible = try {
+                        manager?.primaryClip
+                    } catch (t: Throwable) {
+                        null
+                    }
+                    visible?.description
+                }
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "clipboard hooks failed", t)
+        }
+    }
+
+    /** ClipData の指紋 (自分のコピーかどうかを後で照合するため) */
+    private fun clipFingerprint(clip: ClipData): String {
+        val desc = clip.description
+        val types = StringBuilder()
+        for (i in 0 until desc.mimeTypeCount) {
+            if (i > 0) types.append(',')
+            types.append(desc.getMimeType(i))
+        }
+        val first = if (clip.itemCount > 0) clip.getItemAt(0) else null
+        val head = when {
+            first == null -> ""
+            first.text != null -> "t:" + first.text.toString()
+            first.uri != null -> "u:" + first.uri.toString()
+            first.intent != null -> "i:" + first.intent.toString()
+            else -> ""
+        }
+        return types.toString() + "|" + clip.itemCount + "|" + head
+    }
+
+    /** 渡された ClipData が、このアプリ自身がコピーしたものか */
+    private fun isOwnClip(clip: ClipData): Boolean {
+        val stored = ownClipFingerprint ?: return false
+        return try {
+            clipFingerprint(clip) == stored
+        } catch (t: Throwable) {
+            false
+        }
+    }
+
+    /** 通知オブジェクトへ設定を適用する (その場で書き換える)。 */
+    private fun applyNotificationSettings(notification: Notification) {
+        try {
+            when (getConfig(ConfigStore.FEATURE_NOTIF_ONGOING)) {
+                1 -> notification.flags =
+                    notification.flags or Notification.FLAG_ONGOING_EVENT
+                2 -> notification.flags =
+                    notification.flags and Notification.FLAG_ONGOING_EVENT.inv()
+            }
+            if (getConfig(ConfigStore.FEATURE_NOTIF_INSISTENT) == 1) {
+                notification.flags =
+                    notification.flags or Notification.FLAG_INSISTENT
+            }
+            if (getConfig(ConfigStore.FEATURE_NOTIF_MUTE) == 1) {
+                notification.sound = null
+                notification.vibrate = null
+                notification.defaults = 0
+            }
+        } catch (t: Throwable) {
+            log(Log.WARN, TAG, "notification apply failed", t)
+        }
+    }
 
     /**
      * ミュート用フック群。公開 API の音量指定を横取りして 0 にする。

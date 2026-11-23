@@ -44,6 +44,10 @@ object SettingsTransfer {
         ConfigStore.FEATURE_MUTE,
         ConfigStore.FEATURE_LOCALE,
         ConfigStore.FEATURE_FORCE_LTR,
+        ConfigStore.FEATURE_NOTIF_ONGOING,
+        ConfigStore.FEATURE_NOTIF_INSISTENT,
+        ConfigStore.FEATURE_NOTIF_MUTE,
+        ConfigStore.FEATURE_CLIPBOARD_BLOCK,
         ConfigStore.FEATURE_SMALLEST_WIDTH,
         ConfigStore.FEATURE_EXCLUDE_RECENTS,
         ConfigStore.FEATURE_SHOW_WHEN_LOCKED

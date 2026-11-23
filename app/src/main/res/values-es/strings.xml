@@ -17,6 +17,12 @@
     <string name="label_screen_on">Mantener pantalla encendida</string>
     <string name="label_show_when_locked">Mostrar en la pantalla de bloqueo</string>
     <string name="label_mute">Silencio</string>
+    <string name="group_notifications">Notificaciones</string>
+    <string name="label_notif_ongoing">Notificación persistente</string>
+    <string name="opt_notif_force_ongoing">Hacer persistente</string>
+    <string name="opt_notif_prevent_ongoing">No hacer persistente</string>
+    <string name="label_notif_insistent">Notificaciones insistentes</string>
+    <string name="label_notif_mute">Silenciar notificaciones</string>
     <string name="label_exclude_recents">Excluir de recientes</string>
     <string name="opt_default">Predeterminado</string>
     <string name="opt_portrait">Vertical fijo</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">Error al exportar</string>
     <string name="toast_imported">Ajustes importados para %1$d aplicaciones</string>
     <string name="toast_import_failed">No se pudo importar (no es un archivo de ajustes de Asrish)</string>
+    <string name="group_privacy">Privacidad</string>
+    <string name="label_clipboard_block">Bloquear la lectura del portapapeles</string>
 </resources>

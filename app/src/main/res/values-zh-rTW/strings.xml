@@ -17,6 +17,12 @@
     <string name="label_screen_on">保持螢幕開啟</string>
     <string name="label_show_when_locked">在鎖定畫面上顯示</string>
     <string name="label_mute">靜音</string>
+    <string name="group_notifications">通知</string>
+    <string name="label_notif_ongoing">常駐通知</string>
+    <string name="opt_notif_force_ongoing">設為常駐</string>
+    <string name="opt_notif_prevent_ongoing">不設為常駐</string>
+    <string name="label_notif_insistent">持續提醒通知</string>
+    <string name="label_notif_mute">靜默通知</string>
     <string name="label_exclude_recents">從最近使用的應用程式中排除</string>
     <string name="opt_default">預設</string>
     <string name="opt_portrait">鎖定直向</string>
@@ -50,4 +56,6 @@
     <string name="toast_export_failed">匯出失敗</string>
     <string name="toast_imported">已匯入 %1$d 個應用程式的設定</string>
     <string name="toast_import_failed">無法匯入（不是 Asrish 設定檔）</string>
+    <string name="group_privacy">隱私</string>
+    <string name="label_clipboard_block">阻止讀取剪貼簿</string>
 </resources>
