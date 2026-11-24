@@ -86,8 +86,8 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 アプリ別設定画面 (左: 日本語 / 右: 英語)
 
 <p>
-<img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
-<img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
+<img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
+<img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
 
 ## v0.10.9 の変更点
@@ -324,8 +324,8 @@ if they don't, it's likely your device / environment.
 The per-app settings screen (left: Japanese / right: English)
 
 <p>
-<img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
-<img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
+<img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
+<img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
 
 ## Changes in v0.10.9
