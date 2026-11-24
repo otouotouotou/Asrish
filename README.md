@@ -1,4 +1,4 @@
-# Asrish v0.10.7
+# Asrish v0.10.9
 
 日本語 | [English](#asrish-english)
 
@@ -42,14 +42,14 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 | DPI | デフォルト / 240〜640 |
 | 最小幅 | デフォルト / 320〜800 |
 | 言語 | デフォルト / 日本語 / English / 中文 (简体・繁體) / 한국어 / Español / Français / Deutsch / Русский / العربية |
-| レイアウト方向をLTRに固定 | ON / OFF (言語が RTL のとき、方向だけ LTR に固定する) |
+| レイアウト方向の固定 | デフォルト / LTR に固定 (言語が RTL のとき、方向だけ LTR に固定する) |
 | スクリーンショット | デフォルト / 許可する (FLAG_SECURE を外す) / 禁止する |
-| 画面ON維持 | ON / OFF |
-| ロック画面の上に表示 | ON / OFF |
+| 画面ON維持 | デフォルト / 強制ON / 強制OFF |
+| ロック画面の上に表示 | デフォルト / 強制ON / 強制OFF |
 | ミュート | ON / OFF (MediaPlayer / AudioTrack / SoundPool / ToneGenerator。ネイティブ再生は対象外) |
 | 最近使ったアプリから除外 | ON / OFF |
 | 継続通知 | デフォルト / 継続にする / 継続にしない |
-| 通知を繰り返す | ON / OFF (気づくまで音・バイブを繰り返す) |
+| 通知を繰り返す | デフォルト / 強制ON / 強制OFF (気づくまで音・バイブを繰り返す) |
 | 通知をミュート | ON / OFF |
 | クリップボードの読み取りをブロック | ON / OFF (そのアプリ自身がコピーした内容は読める) |
 
@@ -85,6 +85,21 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 <img src="docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.10.9 の変更点
+- **画面の向きに 4 項目を追加** (GitHub Issue #1 の要望対応):
+  縦固定 (逆)、横固定 (逆)、縦センサー、横センサー。
+  いずれも標準 API (SCREEN_ORIENTATION_*) の追加。
+  ※ 縦センサーは HyperOS 3 では機能しません
+  (動作環境の注記参照)
+- **「強制OFF」を 3 項目に追加**: 通知を繰り返す、画面ON維持、
+  ロック画面の上に表示が、デフォルト / 強制ON / 強制OFF の
+  3 択になった。アプリ自身が後から立てるフラグや表示要求も
+  打ち消す
+- **新アイコン**: 金の魔法のランプ (紺背景)
+- レイアウト方向の固定はデフォルト / LTR に固定のみ
+  (RTL 固定は試験の結果、実レイアウトが反転しなかったため
+  不採用)
 
 ## v0.10.7 の変更点
 - **パッケージ名を変更** (お知らせ参照):
@@ -219,7 +234,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 
 # Asrish (English)
 
-[日本語](#asrish-v0107) | English
+[日本語](#asrish-v0109) | English
 
 An LSPosed module to change various settings per app.
 This is the first step of a project to re-implement features "in the
@@ -262,14 +277,14 @@ added in v0.10.5:
 | DPI | Default / 240–640 |
 | Smallest width | Default / 320–800 |
 | Language | Default / Japanese / English / Chinese (Simplified, Traditional) / Korean / Spanish / French / German / Russian / Arabic |
-| Force layout direction to LTR | On / Off (keeps the language, fixes the layout direction to LTR for RTL languages) |
+| Layout direction | Default / Force LTR (keeps the language, fixes the layout direction to LTR for RTL languages) |
 | Screenshot | Default / Allow (removes FLAG_SECURE) / Block |
-| Keep screen on | On / Off |
-| Show on lock screen | On / Off |
+| Keep screen on | Default / Force on / Force off |
+| Show on lock screen | Default / Force on / Force off |
 | Mute | On / Off (MediaPlayer / AudioTrack / SoundPool / ToneGenerator; native playback is out of scope) |
 | Exclude from recents | On / Off |
 | Ongoing notifications | Default / Force ongoing / Prevent ongoing |
-| Insistent notifications | On / Off (repeats the sound / vibration until noticed) |
+| Insistent notifications | Default / Force on / Force off (repeats the sound / vibration until noticed) |
 | Mute notifications | On / Off |
 | Block clipboard reads | On / Off (content the app copied itself stays readable) |
 
@@ -308,6 +323,22 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.10.9
+- **Added 4 orientations** (requested in GitHub Issue #1):
+  reverse portrait, reverse landscape, sensor portrait, and
+  sensor landscape — standard APIs only
+  (SCREEN_ORIENTATION_*). Note: sensor portrait does not
+  work on HyperOS 3 (see the note under Requirements)
+- **Added "Force off" to 3 settings**: insistent
+  notifications, keep screen on, and show on lock screen
+  are now Default / Force on / Force off. Flags and
+  requests the app sets itself afterwards are overridden
+  too
+- **New icon**: a gold magic lamp on navy
+- Layout direction stays Default / Force LTR only
+  (Force RTL was tried, but the actual layout did not
+  flip, so it was dropped)
 
 ## Changes in v0.10.7
 - **Package name changed** (see the notice above):
