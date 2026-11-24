@@ -36,7 +36,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 ## 機能 (全部アプリ別)
 | 機能 | 選択肢 |
 |---|---|
-| 画面の向き | デフォルト / 縦固定 / 横固定 / 自動回転 (センサー) |
+| 画面の向き | デフォルト / 縦固定 / 横固定 / 自動回転 (センサー) / 縦固定 (逆) / 横固定 (逆) / 縦センサー / 横センサー |
 | 全画面 | デフォルト / 全画面にする / イマーシブ (バーを隠す) / 全画面にしない |
 | フォント倍率 | デフォルト / 85%〜130% |
 | DPI | デフォルト / 240〜640 |
@@ -53,13 +53,15 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 | 通知をミュート | ON / OFF |
 | クリップボードの読み取りをブロック | ON / OFF (そのアプリ自身がコピーした内容は読める) |
 
+※ 縦センサーは HyperOS 3 では機能しません (180°に反転しません)。
+
 いずれもAndroidの公開APIの範囲で実装しています。OSの内部実装を
 フックしていないため、OSのバージョンアップで壊れにくい設計です。
 
 ## 動作環境
 - Android 11 以降
 - LSPosed (Modern Xposed API 102対応のもの)
-- 作者環境では Xiaomi 17 Ultra HyperOS3(Android 16) 、Oneplus 7 OOS11(Android11)で全機能の動作を確認済み
+- 作者環境では Xiaomi 17 Ultra HyperOS3(Android 16) 、Oneplus 7 OOS11(Android11)で動作を確認済み (HyperOS 3 では縦センサーは機能しません)
 
 ## 使い方
 1. ReleaseからAPKをインストール
@@ -254,7 +256,7 @@ added in v0.10.5:
 ## Features (all per-app)
 | Feature | Options |
 |---|---|
-| Orientation | Default / Portrait / Landscape / Auto-rotate (sensor) |
+| Orientation | Default / Portrait / Landscape / Auto-rotate (sensor) / Reverse portrait / Reverse landscape / Sensor portrait / Sensor landscape |
 | Fullscreen | Default / Force fullscreen / Immersive (hide bars) / Prevent fullscreen |
 | Font scale | Default / 85%–130% |
 | DPI | Default / 240–640 |
@@ -271,6 +273,8 @@ added in v0.10.5:
 | Mute notifications | On / Off |
 | Block clipboard reads | On / Off (content the app copied itself stays readable) |
 
+* Sensor portrait does not work on HyperOS 3 (it never rotates to 180 degrees).
+
 All features are implemented using only public Android APIs. Nothing
 hooks OS internals, so the module is designed to keep working across
 OS updates.
@@ -278,7 +282,7 @@ OS updates.
 ## Requirements
 - Android 11 or later
 - LSPosed (with Modern Xposed API 102 support)
-- All features verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11)
+- Verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11) (sensor portrait does not work on HyperOS 3)
 
 ## Usage
 1. Install the APK from Releases
