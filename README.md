@@ -53,7 +53,11 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 | 通知をミュート | ON / OFF |
 | クリップボードの読み取りをブロック | ON / OFF (そのアプリ自身がコピーした内容は読める) |
 
-※ 縦センサーは HyperOS 3 では機能しません (180°に反転しません)。
+※ 縦センサーの 180° 反転は、端末の「すべての回転を許可」
+(allowAllRotations) が有効な場合のみ働きます。HyperOS 3 は
+デフォルト無効のため反転しませんが、HyperCeiler の
+「画面の回転」を有効にすると反転します。有効かどうかは
+機種・ROM 依存のため、Asrish 側では対応しません。
 
 いずれもAndroidの公開APIの範囲で実装しています。OSの内部実装を
 フックしていないため、OSのバージョンアップで壊れにくい設計です。
@@ -90,8 +94,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 - **画面の向きに 4 項目を追加** (GitHub Issue #1 の要望対応):
   縦固定 (逆)、横固定 (逆)、縦センサー、横センサー。
   いずれも標準 API (SCREEN_ORIENTATION_*) の追加。
-  ※ 縦センサーは HyperOS 3 では機能しません
-  (動作環境の注記参照)
+  ※ 縦センサーには端末側の条件があります (注記参照)
 - **「強制OFF」を 3 項目に追加**: 通知を繰り返す、画面ON維持、
   ロック画面の上に表示が、デフォルト / 強制ON / 強制OFF の
   3 択になった。アプリ自身が後から立てるフラグや表示要求も
@@ -297,7 +300,8 @@ OS updates.
 ## Requirements
 - Android 11 or later
 - LSPosed (with Modern Xposed API 102 support)
-- Verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11) (sensor portrait does not work on HyperOS 3)
+- Verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11)
+- Note: sensor portrait flips to 180° only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default; enabling HyperCeiler's "Screen rotation" makes it flip. This depends on the device / ROM, and Asrish does not handle it
 
 ## Usage
 1. Install the APK from Releases
@@ -328,8 +332,8 @@ The per-app settings screen (left: Japanese / right: English)
 - **Added 4 orientations** (requested in GitHub Issue #1):
   reverse portrait, reverse landscape, sensor portrait, and
   sensor landscape — standard APIs only
-  (SCREEN_ORIENTATION_*). Note: sensor portrait does not
-  work on HyperOS 3 (see the note under Requirements)
+  (SCREEN_ORIENTATION_*). Note: sensor portrait depends on
+  a device-side setting (see the note under Requirements)
 - **Added "Force off" to 3 settings**: insistent
   notifications, keep screen on, and show on lock screen
   are now Default / Force on / Force off. Flags and
