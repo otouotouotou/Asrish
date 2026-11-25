@@ -54,10 +54,10 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 | クリップボードの読み取りをブロック | ON / OFF (そのアプリ自身がコピーした内容は読める) |
 
 ※ 縦センサーの 180° 反転は、端末の「すべての回転を許可」
-(allowAllRotations) が有効な場合のみ働きます。HyperOS 3 は
+(allowAllRotations) が有効な場合のみ働きます。HyperOS3は
 デフォルト無効のため反転しませんが、HyperCeiler の
-「画面の回転」を有効にすると反転します。拙作の [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) でも回避できます。有効かどうかは
-機種・ROM 依存のため、Asrish 側では対応しません。
+「画面の回転」か、[AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) で回避できます。
+有効かどうかは機種・ROM 依存のため、Asrish 側では対応しません。
 
 いずれもAndroidの公開APIの範囲で実装しています。OSの内部実装を
 フックしていないため、OSのバージョンアップで壊れにくい設計です。
