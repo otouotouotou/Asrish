@@ -291,7 +291,7 @@ added in v0.10.5:
 | Mute notifications | On / Off |
 | Block clipboard reads | On / Off (content the app copied itself stays readable) |
 
-* Sensor portrait rotates to 180 degrees only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default, so it does not rotate there; enabling HyperCeiler's "Screen rotation" makes it rotate. You can also work around it with my [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) module. Whether this is available depends on the device / ROM, and Asrish does not handle it.
+* Sensor portrait rotates to 180 degrees only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default, so it does not rotate there; you can work around it with HyperCeiler's "Screen rotation" or with [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations). Whether this is available depends on the device / ROM, and Asrish does not handle it.
 
 All features are implemented using only public Android APIs. Nothing
 hooks OS internals, so the module is designed to keep working across
