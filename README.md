@@ -56,7 +56,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 ※ 縦センサーの 180° 反転は、端末の「すべての回転を許可」
 (allowAllRotations) が有効な場合のみ働きます。HyperOS 3 は
 デフォルト無効のため反転しませんが、HyperCeiler の
-「画面の回転」を有効にすると反転します。有効かどうかは
+「画面の回転」を有効にすると反転します。拙作の [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) でも回避できます。有効かどうかは
 機種・ROM 依存のため、Asrish 側では対応しません。
 
 いずれもAndroidの公開APIの範囲で実装しています。OSの内部実装を
@@ -65,7 +65,7 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 ## 動作環境
 - Android 11 以降
 - LSPosed (Modern Xposed API 102対応のもの)
-- 作者環境では Xiaomi 17 Ultra HyperOS3(Android 16) 、Oneplus 7 OOS11(Android11)で動作を確認済み (HyperOS 3 では縦センサーは機能しません)
+- 作者環境では Xiaomi 17 Ultra HyperOS3(Android 16) 、Oneplus 7 OOS11(Android11)で動作を確認済み (HyperOS 3 では縦センサーは機能しませんが、[AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) で回避できます)
 
 ## 使い方
 1. ReleaseからAPKをインストール
@@ -291,7 +291,7 @@ added in v0.10.5:
 | Mute notifications | On / Off |
 | Block clipboard reads | On / Off (content the app copied itself stays readable) |
 
-* Sensor portrait rotates to 180 degrees only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default, so it does not rotate there; enabling HyperCeiler's "Screen rotation" makes it rotate. Whether this is available depends on the device / ROM, and Asrish does not handle it.
+* Sensor portrait rotates to 180 degrees only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default, so it does not rotate there; enabling HyperCeiler's "Screen rotation" makes it rotate. You can also work around it with my [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) module. Whether this is available depends on the device / ROM, and Asrish does not handle it.
 
 All features are implemented using only public Android APIs. Nothing
 hooks OS internals, so the module is designed to keep working across
@@ -301,7 +301,7 @@ OS updates.
 - Android 11 or later
 - LSPosed (with Modern Xposed API 102 support)
 - Verified by the author on Xiaomi 17 Ultra HyperOS3 (Android 16),Oneplus7 OOS11(Android 11)
-- Note: sensor portrait flips to 180° only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default; enabling HyperCeiler's "Screen rotation" makes it flip. This depends on the device / ROM, and Asrish does not handle it
+- Note: sensor portrait flips to 180° only when the device allows all rotations (allowAllRotations). HyperOS 3 has it off by default; enabling HyperCeiler's "Screen rotation" makes it flip, or use my [AllowAllRotations](https://github.com/otouotouotou/AllowAllRotations) module. This depends on the device / ROM, and Asrish does not handle it
 
 ## Usage
 1. Install the APK from Releases
