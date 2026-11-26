@@ -25,6 +25,11 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 5. 旧バージョンをアンインストール
 6. 再起動
 
+## 免責事項
+本モジュールは無保証で提供されます。使用は自己責任で
+お願いします。本モジュールの使用によって生じた不具合・損害に
+ついて、作者は責任を負いません。
+
 ## ライセンス・出典
 - 機能セットの原典はrovo89のApp Settingsと、その
   Apache License 2.0 フォークであるBlueCat300の
@@ -262,6 +267,11 @@ added in v0.10.5:
 4. Open Asrish and use "Import" to load the exported file
 5. Uninstall the old version
 6. Reboot
+
+## Disclaimer
+This module is provided "as is", without any warranty. Use it
+at your own risk. The author takes no responsibility for any
+damage or malfunction caused by using this module.
 
 ## License & attribution
 - The feature set originates from App Settings by rovo89 and its
