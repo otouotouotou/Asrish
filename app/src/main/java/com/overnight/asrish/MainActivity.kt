@@ -12,7 +12,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -35,52 +34,53 @@ class MainActivity : Activity() {
     private lateinit var searchBox: EditText
     private var allApps: List<ApplicationInfo> = emptyList()
 
+    // --- 一覧の並び替え (v0.10.10 rev4〜、アプリ側だけの表示設定) ---
+    // ソート順 (名前 / 日付 / 大きさ) と「設定済みを上に」は独立。
+    // 設定済み優先は選んだソートの上に重ねて効く (安定ソート)
+    private var sortMode: Int = SORT_NAME
+    private var configuredFirst: Boolean = true
+
+    private fun uiPrefs() = getSharedPreferences("ui_prefs", MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sortMode = uiPrefs().getInt("sort_mode", SORT_NAME)
+        configuredFirst = uiPrefs().getBoolean("configured_first", true)
 
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(16), dp(16), dp(16))
+            // 画面背景 (v0.10.10 rev8〜): ライトは薄グレー、ダークは純黒
+            setBackgroundColor(getColor(R.color.window_bg))
         }
         applySystemBarInsets(root)
 
+        // --- タイトル + ☰ メニュー (v0.10.10 rev4〜、rev5 で ☰ を右端に) ---
+        // 書き出し / 読み込み / ソート順はタイトル行右端の ☰ から開く
+        // 文字メニューに集約し、一覧の表示領域を広げた
+        val titleRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+        }
         val title = TextView(this).apply {
             text = "Asrish"
             textSize = 20f
             setTypeface(typeface, Typeface.BOLD)
         }
-        root.addView(title)
-
-        // --- 設定ファイルの書き出し / 読み込み (v0.10.4〜) ---
-        // Storage Access Framework を使うのでストレージ権限は不要。
-        // 説明文は置かず、見出し + ボタンの並びにする (v0.10.5〜)
-        val transferLabel = TextView(this).apply {
-            text = getString(R.string.label_settings_file)
-            textSize = 13f
-            setPadding(0, dp(12), 0, 0)
-        }
-        root.addView(transferLabel)
-        val transferRow = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            setPadding(0, dp(4), 0, dp(4))
-        }
-        val exportButton = Button(this).apply {
-            text = getString(R.string.button_export)
-            setOnClickListener { startExport() }
-        }
-        val importButton = Button(this).apply {
-            text = getString(R.string.button_import)
-            setOnClickListener { startImport() }
-        }
-        transferRow.addView(
-            exportButton,
+        titleRow.addView(
+            title,
             LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         )
-        transferRow.addView(
-            importButton,
-            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-        )
-        root.addView(transferRow)
+        val menuButton = TextView(this).apply {
+            text = "☰"
+            textSize = 20f
+            setPadding(dp(12), dp(4), dp(4), dp(4))
+            isClickable = true
+            setOnClickListener { showMainMenu(this) }
+        }
+        titleRow.addView(menuButton)
+        root.addView(titleRow)
 
         // --- 検索窓 (v0.3.0〜): アプリ名・パッケージ名で絞り込み ---
         searchBox = EditText(this).apply {
@@ -111,6 +111,47 @@ class MainActivity : Activity() {
 
         setContentView(root)
         root.requestApplyInsets()
+    }
+
+    // --- タイトル横 ▼ のメニュー (v0.10.10 rev4〜) ---
+    // 書き出し / 読み込み / ソート順 (サブメニュー、ラジオ) /
+    // 設定済みを上に (チェック、ソート順とは独立)
+    private fun showMainMenu(anchor: View) {
+        val popup = android.widget.PopupMenu(this, anchor)
+        val menu = popup.menu
+        // 並びは動線順 (v0.10.10 rev6〜): よく触る表示系を上に、
+        // たまにしか使わないファイル操作を下に
+        val sortSub = menu.addSubMenu(0, MENU_SORT, 0, R.string.menu_sort_order)
+        sortSub.add(GROUP_SORT, SORT_NAME, 0, R.string.sort_name)
+        sortSub.add(GROUP_SORT, SORT_DATE, 1, R.string.sort_date)
+        sortSub.add(GROUP_SORT, SORT_SIZE, 2, R.string.sort_size)
+        sortSub.setGroupCheckable(GROUP_SORT, true, true)
+        sortSub.findItem(sortMode)?.isChecked = true
+        val cf = menu.add(0, MENU_CONFIGURED_FIRST, 1, R.string.menu_configured_first)
+        cf.isCheckable = true
+        cf.isChecked = configuredFirst
+        menu.add(0, MENU_EXPORT, 2, R.string.button_export)
+        menu.add(0, MENU_IMPORT, 3, R.string.button_import)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                MENU_EXPORT -> startExport()
+                MENU_IMPORT -> startImport()
+                SORT_NAME, SORT_DATE, SORT_SIZE -> {
+                    sortMode = item.itemId
+                    uiPrefs().edit().putInt("sort_mode", sortMode).apply()
+                    applyFilter()
+                }
+                MENU_CONFIGURED_FIRST -> {
+                    configuredFirst = !configuredFirst
+                    uiPrefs().edit()
+                        .putBoolean("configured_first", configuredFirst).apply()
+                    applyFilter()
+                }
+                else -> return@setOnMenuItemClickListener false
+            }
+            true
+        }
+        popup.show()
     }
 
     // --- 設定ファイルの書き出し / 読み込み ---
@@ -200,7 +241,37 @@ class MainActivity : Activity() {
                     it.packageName.lowercase().contains(q)
             }
         }
-        adapter = AppListAdapter(filtered)
+        // 選んだソート順で並べる (v0.10.10 rev4〜)。
+        // 日付 = インストール日時の新しい順、大きさ = APK サイズの大きい順
+        val pm2 = packageManager
+        val baseSorted = when (sortMode) {
+            SORT_DATE -> filtered.sortedByDescending {
+                try {
+                    pm2.getPackageInfo(it.packageName, 0).firstInstallTime
+                } catch (t: Throwable) {
+                    0L
+                }
+            }
+            SORT_SIZE -> filtered.sortedByDescending {
+                try {
+                    java.io.File(it.sourceDir).length()
+                } catch (t: Throwable) {
+                    0L
+                }
+            }
+            else -> filtered.sortedBy {
+                pm2.getApplicationLabel(it).toString().lowercase()
+            }
+        }
+        // 「設定済みを上に」はソート順とは独立 (v0.10.10〜)。
+        // sortedBy は安定ソートなので、ON の時は選んだソートの
+        // 並びを保ったまま設定済みだけが上に寄る
+        val sorted = if (configuredFirst) {
+            baseSorted.sortedBy { if (isConfigured(it.packageName)) 0 else 1 }
+        } else {
+            baseSorted
+        }
+        adapter = AppListAdapter(sorted)
         listView.adapter = adapter
     }
 
@@ -248,6 +319,16 @@ class MainActivity : Activity() {
             val texts = row.getChildAt(1) as LinearLayout
             (texts.findViewWithTag("label") as TextView).text = pm.getApplicationLabel(info)
             val configured = isConfigured(info.packageName)
+            // 設定済みの行は背景も変える (v0.10.10〜)。最上段ソートと
+            // セットで、設定済みかどうかを一目で判別できるようにする。
+            // 行はリサイクルされるので、未設定では透明に戻すこと
+            row.setBackgroundColor(
+                if (configured) {
+                    this@MainActivity.getColor(R.color.configured_row_bg)
+                } else {
+                    android.graphics.Color.TRANSPARENT
+                }
+            )
             (texts.findViewWithTag("sub") as TextView).text =
                 info.packageName + if (configured) {
                     this@MainActivity.getString(R.string.configured_suffix)
@@ -281,5 +362,15 @@ class MainActivity : Activity() {
     companion object {
         private const val REQ_EXPORT = 1001
         private const val REQ_IMPORT = 1002
+
+        // ▼ メニューの項目 ID。ソートの 3 項目はそのまま sortMode の値
+        private const val MENU_EXPORT = 2001
+        private const val MENU_IMPORT = 2002
+        private const val MENU_SORT = 2003
+        private const val MENU_CONFIGURED_FIRST = 2004
+        private const val GROUP_SORT = 2100
+        private const val SORT_NAME = 0
+        private const val SORT_DATE = 1
+        private const val SORT_SIZE = 2
     }
 }

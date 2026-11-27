@@ -5,7 +5,14 @@
     <!-- 設定行の区切り線。ダークは values-night 側 -->
     <color name="divider">#D0D0D0</color>
     <!-- グループカードの背景。ダークは values-night 側 -->
-    <color name="card_bg">#F6F6F6</color>
+    <color name="card_bg">#FFFFFF</color>
+    <!-- 画面全体の背景 (ライトは薄グレーにして白カードを浮かせる)。
+         ダークは values-night 側で純黒 -->
+    <color name="window_bg">#EBEBEB</color>
+    <!-- 設定画面の項目名の文字色 (ライトは真っ黒)。ダークは values-night 側 -->
+    <color name="label_text">#000000</color>
     <!-- 未適用マーク (●) の色。ダークは values-night 側 -->
     <color name="pending_dot">#E65100</color>
+    <!-- 設定済みアプリの行背景 (一覧で上に並ぶ行の判別用)。ダークは values-night 側 -->
+    <color name="configured_row_bg">#D9D9D9</color>
 </resources>

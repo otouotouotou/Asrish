@@ -1,4 +1,4 @@
-# Asrish v0.10.9
+# Asrish v0.10.10
 
 日本語 | [English](#asrish-english)
 
@@ -18,10 +18,12 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 旧バージョンからの移行は、v0.10.5で追加した設定ファイルの
 書き出し / 読み込みを使ってください:
 
-1. 旧バージョン (com.overnight.asrish) で設定を「書き出し」しておく
+1. 旧バージョン (com.overnight.asrish) で、右上の ☰ メニューから
+   「設定書き出し」をしておく
 2. 本バージョンをインストール
 3. LSPosed でモジュールを有効化し、対象アプリをスコープに入れる
-4. Asrish を開いて「読み込み」で、書き出しておいたファイルを選ぶ
+4. Asrish を開いて、☰ メニューの「設定読み込み」で、
+   書き出しておいたファイルを選ぶ
 5. 旧バージョンをアンインストール
 6. 再起動
 
@@ -94,6 +96,16 @@ LSPosed Modules Repo への登録に向け、v0.10.7 でパッケージ名を
 <img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-ja.png" width="300" alt="設定画面 (日本語)">
 <img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-en.png" width="300" alt="設定画面 (英語)">
 </p>
+
+## v0.10.10 の変更点
+- **アプリ一覧の改善** (5ch の要望対応): 設定済みのアプリが
+  一覧の上に並ぶようになり、行の背景もグレーになる
+- **メイン画面を ☰ メニューに集約**: 並び順 (名前順 / 日付順 /
+  サイズ順)、「設定済みを上に」(並び順とは独立した切替)、
+  設定書き出し / 設定読み込みを、タイトル行右端の ☰ に移した。
+  従来の「設定ファイル」見出しとボタンは廃止
+- **ライトモードの配色を調整**: 背景を薄グレー、グループカードを
+  白にして輪郭が出るようにし、設定画面の項目名を黒にした
 
 ## v0.10.9 の変更点
 - **画面の向きに 4 項目を追加** (GitHub Issue #1 の要望対応):
@@ -261,10 +273,12 @@ different app, so settings will not carry over automatically.
 To migrate from the old version, use the settings export / import
 added in v0.10.5:
 
-1. In the old version (com.overnight.asrish), export your settings
+1. In the old version (com.overnight.asrish), use "Export settings"
+   in the ☰ menu at the top right to export your settings
 2. Install this version
 3. Enable the module in LSPosed and add your target apps to its scope
-4. Open Asrish and use "Import" to load the exported file
+4. Open Asrish and use "Import settings" in the ☰ menu to load
+   the exported file
 5. Uninstall the old version
 6. Reboot
 
@@ -337,6 +351,17 @@ The per-app settings screen (left: Japanese / right: English)
 <img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-ja.png" width="300" alt="Settings screen (Japanese)">
 <img src="https://raw.githubusercontent.com/otouotouotou/Asrish/main/docs/images/settings-en.png" width="300" alt="Settings screen (English)">
 </p>
+
+## Changes in v0.10.10
+- **App list improvements** (requested on 5ch): configured apps
+  now sit at the top of the list, with a grey row background
+- **Main screen consolidated into a ☰ menu**: sort order
+  (by name / by date / by size), "Configured apps first"
+  (an independent toggle), and Export settings / Import settings
+  moved to the ☰ menu at the right end of the title row.
+  The old "Settings file" heading and buttons are gone
+- **Light mode colours adjusted**: the background is now light
+  grey with white group cards, and the settings labels are black
 
 ## Changes in v0.10.9
 - **Added 4 orientations** (requested in GitHub Issue #1):

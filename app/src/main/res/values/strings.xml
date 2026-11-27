@@ -16,7 +16,6 @@
     <string name="label_fontsize">フォント倍率</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">言語</string>
-    <string name="label_forceltr">レイアウト方向をLTRに固定</string>
     <string name="label_smallest_width">最小幅</string>
     <string name="label_screenshot">スクリーンショット</string>
     <string name="label_screen_on">画面をONのままにする</string>
@@ -24,19 +23,25 @@
     <string name="label_mute">ミュート</string>
     <string name="group_notifications">通知</string>
     <string name="label_notif_ongoing">継続通知</string>
-    <string name="opt_notif_force_ongoing">継続にする</string>
-    <string name="opt_notif_prevent_ongoing">継続にしない</string>
     <string name="label_notif_insistent">通知を繰り返す</string>
     <string name="label_notif_mute">通知をミュート</string>
     <string name="label_exclude_recents">最近使ったアプリから除外</string>
 
     <!-- 選択肢 -->
     <string name="opt_default">デフォルト</string>
+    <string name="opt_force_on">強制ON</string>
+    <string name="opt_force_off">強制OFF</string>
     <string name="opt_portrait">縦固定</string>
     <string name="opt_landscape">横固定</string>
-    <string name="opt_sensor">自動回転 (センサー)</string>
+    <string name="opt_sensor">自動回転</string>
+    <string name="opt_reverse_portrait">縦固定 (逆)</string>
+    <string name="opt_reverse_landscape">横固定 (逆)</string>
+    <string name="opt_sensor_portrait">縦センサー</string>
+    <string name="opt_sensor_landscape">横センサー</string>
+    <string name="label_layout_direction">レイアウト方向の固定</string>
+    <string name="opt_force_ltr">LTR に固定</string>
     <string name="opt_fullscreen_on">全画面にする</string>
-    <string name="opt_fullscreen_immersive">イマーシブ (バーを隠す)</string>
+    <string name="opt_fullscreen_immersive">イマーシブ</string>
     <string name="opt_fullscreen_off">全画面にしない</string>
     <string name="opt_font_standard">100% (標準)</string>
     <string name="opt_allow">許可する</string>
@@ -57,8 +62,13 @@
 
     <!-- 設定ファイルの書き出し / 読み込み -->
     <string name="label_settings_file">設定ファイル</string>
-    <string name="button_export">書き出し</string>
-    <string name="button_import">読み込み</string>
+    <string name="button_export">設定書き出し</string>
+    <string name="button_import">設定読み込み</string>
+    <string name="menu_sort_order">並び順</string>
+    <string name="sort_name">名前順</string>
+    <string name="sort_date">日付順</string>
+    <string name="sort_size">サイズ順</string>
+    <string name="menu_configured_first">設定済みを上に</string>
     <string name="import_confirm_title">設定の読み込み</string>
     <string name="import_confirm_message">現在の設定をすべて、ファイル内の %1$d 件のアプリ設定で置き換えます。よろしいですか？</string>
     <string name="toast_exported">書き出しました</string>

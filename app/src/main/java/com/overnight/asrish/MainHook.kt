@@ -69,30 +69,36 @@ import java.util.Locale
  *    対象アプリ自身の全タスクに設定するので、そのアプリのタスクは
  *    どれも履歴に出なくなる
  *  - ロック画面の上に表示 (v0.10.0〜): onResume で公開 API の
- *    Activity.setShowWhenLocked(true) を呼ぶ (API 27 からある
+ *    Activity.setShowWhenLocked を呼ぶ (API 27 からある
  *    公開 API なので直接呼べる)。ロック中にその Activity が
  *    前面へ出たとき、ロック画面の上に表示される。
- *    OFF (デフォルト) では何もしない
+ *    v0.10.8〜「表示しない」も選べる (アプリ自身の設定を打ち消す)
  *
  * 設定の受け渡しは Remote Preferences (LSPosed フレームワーク経由):
  * 設定アプリが XposedService 経由で書き、フックは
  * getRemotePreferences で読む (v0.3.0〜)。
- *  "orientation": 0=デフォルト, 1=縦, 2=横, 3=自動(センサー)
+ *  "orientation": 0=デフォルト, 1=縦, 2=横, 3=自動(センサー), 4=縦(逆),
+ *    5=横(逆), 6=縦(センサー), 7=横(センサー) (4〜7 は v0.10.8〜)
  *  "fullscreen":  0=デフォルト, 1=全画面, 2=イマーシブ, 3=全画面にしない
- *  "screenon":    0=OFF, 1=ON
+ *  "screenon":    0=デフォルト, 1=ONのままにする, 2=ONのままにしない
+ *    (2 は v0.10.8〜。アプリ自身が立てる FLAG_KEEP_SCREEN_ON も剥がす)
  *  "screenshot":  0=デフォルト, 1=許可する (FLAG_SECURE を無効化), 2=禁止する
  *  "fontsize":    0=デフォルト, それ以外はフォント倍率のパーセント (85〜130)
  *  "dpi":         0=デフォルト, それ以外は密度 (dpi の絶対値)
  *  "mute":        0=デフォルト, 1=ミュート
  *  "locale":      ConfigStore.LOCALE_TAGS へのインデックス (0=デフォルト)
- *  "forceltr":    0=デフォルト, 1=レイアウト方向を LTR に固定 (v0.10.5〜)
+ *  "forceltr":    0=デフォルト, 1=レイアウト方向を LTR に固定 (v0.10.5〜。
+ *    キーの名前は互換のため forceltr のまま。2=RTL は v0.10.8beta で
+ *    試験したが実レイアウトが反転せず v0.10.9 で不採用、値は無視する)
  *  "notifongoing": 0=デフォルト, 1=継続通知にする, 2=継続通知にしない (v0.10.6〜)
- *  "notifinsistent": 0=デフォルト, 1=通知を繰り返す (FLAG_INSISTENT) (v0.10.6〜)
+ *  "notifinsistent": 0=デフォルト, 1=通知を繰り返す (FLAG_INSISTENT),
+ *    2=通知を繰り返さない (v0.10.8〜。1 のみだった v0.10.6〜の拡張)
  *  "notifmute":   0=デフォルト, 1=通知の音・バイブを消す (v0.10.6〜)
  *  "clipboardblock": 0=デフォルト, 1=クリップボードの読み取りをブロック (v0.10.7〜、独自機能)
  *  "smallestwidth": 0=デフォルト, それ以外は最小幅 (dp の絶対値)
  *  "excluderecents": 0=デフォルト, 1=最近使ったアプリから除外する
- *  "showwhenlocked": 0=デフォルト, 1=ロック画面の上に表示する
+ *  "showwhenlocked": 0=デフォルト, 1=ロック画面の上に表示する,
+ *    2=表示しない (v0.10.8〜。アプリ自身の設定を打ち消す)
  *
  * ※ v0.1.3〜v0.2.0 はモジュール内蔵 SharedPreferences + 自前
  *   ContentProvider で受け渡していたが、HyperOS 3 では対象アプリ
@@ -149,11 +155,11 @@ class MainHook : XposedModule() {
                     result
                 }
 
-            // --- Force LTR の保険: Activity 生成時にレイアウト方向を固定 ---
+            // --- レイアウト方向固定の保険: Activity 生成時に方向を固定 ---
             // 方向の本命は applyDisplayConfig の Configuration 書き換えだが、
-            // アプリが独自に Context を作り直す等で方向が RTL に戻る場合に
+            // アプリが独自に Context を作り直す等で方向が戻る場合に
             // 備え、Activity の生成直前 (attachBaseContext) でも固定する。
-            // ON のときだけ作用し、OFF では素通しする
+            // デフォルト (0) のときだけ素通しする
             val attachBase = ContextWrapper::class.java.getDeclaredMethod(
                 "attachBaseContext", Context::class.java
             )
@@ -161,12 +167,13 @@ class MainHook : XposedModule() {
                 .setId("asrish.attachBaseContext")
                 .setExceptionMode(ExceptionMode.PROTECTIVE)
                 .intercept { chain ->
-                    if (chain.thisObject is Activity &&
-                        getConfig(ConfigStore.FEATURE_FORCE_LTR) == 1
-                    ) {
+                    val dirMode = getConfig(ConfigStore.FEATURE_FORCE_LTR)
+                    if (chain.thisObject is Activity && dirMode == 1) {
                         val base = chain.getArg(0) as? Context
                         if (base != null) {
-                            return@intercept chain.proceed(arrayOf<Any>(ltrContext(base)))
+                            return@intercept chain.proceed(
+                                arrayOf<Any>(directionContext(base, dirMode))
+                            )
                         }
                     }
                     chain.proceed()
@@ -224,6 +231,7 @@ class MainHook : XposedModule() {
                         val activity = chain.thisObject as Activity
                         applyFullscreen(activity)
                         applyScreenshot(activity)
+                        applyScreenOn(activity)
                     }
                     result
                 }
@@ -248,17 +256,26 @@ class MainHook : XposedModule() {
         applyFullscreen(activity)
         applyScreenshot(activity)
         applyDisplayConfig(activity)
+        applyScreenOn(activity)
+        applyExcludeFromRecents(activity)
+        applyShowWhenLocked(activity)
+    }
+
+    /**
+     * 画面ON維持: 1 = FLAG_KEEP_SCREEN_ON を立てる、2 = 剥がす。
+     * 2 のときは対象アプリ自身が後から立てる分も、ウィンドウフラグの
+     * フック側 (installWindowFlagHooks) で落とす。
+     */
+    private fun applyScreenOn(activity: Activity) {
         try {
-            val screenOn = getConfig(ConfigStore.FEATURE_SCREEN_ON) == 1
             val window = activity.window ?: return
-            if (screenOn) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            when (getConfig(ConfigStore.FEATURE_SCREEN_ON)) {
+                1 -> window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                2 -> window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "screen-on apply failed", t)
         }
-        applyExcludeFromRecents(activity)
-        applyShowWhenLocked(activity)
     }
 
     /**
@@ -292,8 +309,10 @@ class MainHook : XposedModule() {
      */
     private fun applyShowWhenLocked(activity: Activity) {
         try {
-            if (getConfig(ConfigStore.FEATURE_SHOW_WHEN_LOCKED) != 1) return
-            activity.setShowWhenLocked(true)
+            when (getConfig(ConfigStore.FEATURE_SHOW_WHEN_LOCKED)) {
+                1 -> activity.setShowWhenLocked(true)
+                2 -> activity.setShowWhenLocked(false)
+            }
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "show-when-locked apply failed", t)
         }
@@ -330,10 +349,21 @@ class MainHook : XposedModule() {
      * スクリーンショット「許可する」用: 対象アプリ自身が FLAG_SECURE を
      * 立てる経路 (Window.setFlags / addFlags / setAttributes) を横取りし、
      * そのビットだけを落とす。設定が「許可する」のとき以外は素通し。
+     * 画面ON維持「ONのままにしない」用に、FLAG_KEEP_SCREEN_ON についても
+     * 同じ落とし方をする (v0.10.8〜)。
      */
     private fun installWindowFlagHooks() {
         try {
             val secure = WindowManager.LayoutParams.FLAG_SECURE
+            val keepOn = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+
+            // 落とすべきビット (設定に応じて 0〜2 ビット)
+            fun stripBits(): Int {
+                var bits = 0
+                if (isScreenshotAllowed()) bits = bits or secure
+                if (isScreenOnPrevented()) bits = bits or keepOn
+                return bits
+            }
 
             val setFlags = Window::class.java.getDeclaredMethod(
                 "setFlags", Int::class.javaPrimitiveType!!, Int::class.javaPrimitiveType!!
@@ -342,11 +372,12 @@ class MainHook : XposedModule() {
                 .setId("asrish.windowSetFlags")
                 .setExceptionMode(ExceptionMode.PROTECTIVE)
                 .intercept { chain ->
+                    val strip = stripBits()
                     val flags = chain.getArg(0) as Int
                     val mask = chain.getArg(1) as Int
-                    if (isScreenshotAllowed() && mask and secure != 0) {
-                        log(Log.INFO, TAG, "neutralized FLAG_SECURE in setFlags")
-                        chain.proceed(arrayOf<Any>(flags and secure.inv(), mask and secure.inv()))
+                    if (strip != 0 && mask and strip != 0) {
+                        log(Log.INFO, TAG, "neutralized window flags in setFlags")
+                        chain.proceed(arrayOf<Any>(flags and strip.inv(), mask and strip.inv()))
                     } else {
                         chain.proceed()
                     }
@@ -359,10 +390,11 @@ class MainHook : XposedModule() {
                 .setId("asrish.windowAddFlags")
                 .setExceptionMode(ExceptionMode.PROTECTIVE)
                 .intercept { chain ->
+                    val strip = stripBits()
                     val flags = chain.getArg(0) as Int
-                    if (isScreenshotAllowed() && flags and secure != 0) {
-                        log(Log.INFO, TAG, "neutralized FLAG_SECURE in addFlags")
-                        chain.proceed(arrayOf<Any>(flags and secure.inv()))
+                    if (strip != 0 && flags and strip != 0) {
+                        log(Log.INFO, TAG, "neutralized window flags in addFlags")
+                        chain.proceed(arrayOf<Any>(flags and strip.inv()))
                     } else {
                         chain.proceed()
                     }
@@ -375,10 +407,11 @@ class MainHook : XposedModule() {
                 .setId("asrish.windowSetAttributes")
                 .setExceptionMode(ExceptionMode.PROTECTIVE)
                 .intercept { chain ->
+                    val strip = stripBits()
                     val params = chain.getArg(0) as? WindowManager.LayoutParams
-                    if (isScreenshotAllowed() && params != null && params.flags and secure != 0) {
-                        params.flags = params.flags and secure.inv()
-                        log(Log.INFO, TAG, "neutralized FLAG_SECURE in setAttributes")
+                    if (strip != 0 && params != null && params.flags and strip != 0) {
+                        params.flags = params.flags and strip.inv()
+                        log(Log.INFO, TAG, "neutralized window flags in setAttributes")
                     }
                     chain.proceed()
                 }
@@ -389,6 +422,9 @@ class MainHook : XposedModule() {
 
     private fun isScreenshotAllowed(): Boolean =
         getConfig(ConfigStore.FEATURE_SCREENSHOT) == 1
+
+    private fun isScreenOnPrevented(): Boolean =
+        getConfig(ConfigStore.FEATURE_SCREEN_ON) == 2
 
     /** スクリーンショット制御を現在のウィンドウへ適用する */
     private fun applyScreenshot(activity: Activity) {
@@ -419,9 +455,9 @@ class MainHook : XposedModule() {
             val dpi = getConfig(ConfigStore.FEATURE_DPI)
             val localeIdx = getConfig(ConfigStore.FEATURE_LOCALE)
             val smallestWidth = getConfig(ConfigStore.FEATURE_SMALLEST_WIDTH)
-            val forceLtr = getConfig(ConfigStore.FEATURE_FORCE_LTR) == 1
+            val dirMode = getConfig(ConfigStore.FEATURE_FORCE_LTR)
             if (percent == 0 && dpi == 0 && localeIdx == 0 && smallestWidth == 0 &&
-                !forceLtr
+                dirMode == 0
             ) {
                 return
             }
@@ -445,10 +481,16 @@ class MainHook : XposedModule() {
                 null
             }
             val localeDone = localeTarget == null || current.locales == localeTarget
-            // Force LTR: 現在の方向が既に LTR なら追加の仕事はない。
-            // 言語を触らない場合でも、システムロケールが RTL なら効かせる
-            val dirDone = !forceLtr ||
-                current.layoutDirection == View.LAYOUT_DIRECTION_LTR
+            // レイアウト方向固定: 目標方向に既になっているなら追加の
+            // 仕事はない。言語を触らない場合でも、システムロケールが
+            // 逆向きなら効かせる
+            val dirTarget = if (dirMode == 1) {
+                View.LAYOUT_DIRECTION_LTR
+            } else {
+                null
+            }
+            val dirDone = dirTarget == null ||
+                current.layoutDirection == dirTarget
             if (fontDone && dpiDone && localeDone && swDone && dirDone) return
 
             val config = Configuration(current)
@@ -460,12 +502,12 @@ class MainHook : XposedModule() {
                 // 書式 (日付・数値・通貨など) も対象言語に追随させる
                 Locale.setDefault(localeTarget[0])
             }
-            if (forceLtr) {
+            if (dirMode == 1) {
                 // setLocales の後で上書きする (setLocales はロケールから
-                // 方向を再計算するため、先に書くと RTL に戻される)。
+                // 方向を再計算するため、先に書くと戻される)。
                 // layoutDirection フィールドは Kotlin からは val 扱いで
                 // 直接代入できない (API 37 スタブ) ため、公開メソッド
-                // setLayoutDirection に LTR なロケールを渡して設定する
+                // setLayoutDirection に LTR 方向のロケールを渡して設定する
                 config.setLayoutDirection(Locale.ENGLISH)
             }
 
@@ -480,17 +522,18 @@ class MainHook : XposedModule() {
 
             @Suppress("DEPRECATION")
             resources.updateConfiguration(config, metrics)
-            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget locale=$localeTag smallestWidth=$swTarget forceLtr=$forceLtr in $targetPackage")
+            log(Log.INFO, TAG, "display config set: fontScale=$fontTarget dpi=$dpiTarget locale=$localeTag smallestWidth=$swTarget dirMode=$dirMode in $targetPackage")
         } catch (t: Throwable) {
             log(Log.WARN, TAG, "display config apply failed", t)
         }
     }
 
     /**
-     * Force LTR 用: 渡された Context と同じ設定で、レイアウト方向だけを
-     * LTR に固定した Context を作る。失敗したら元の Context をそのまま返す。
+     * レイアウト方向固定用: 渡された Context と同じ設定で、レイアウト
+     * 方向だけを LTR に固定した Context を作る (dirMode は 1 のときだけ
+     * 呼ばれる)。失敗したら元の Context をそのまま返す。
      */
-    private fun ltrContext(base: Context): Context {
+    private fun directionContext(base: Context, dirMode: Int): Context {
         return try {
             val config = Configuration(base.resources.configuration)
             config.setLayoutDirection(Locale.ENGLISH)
@@ -705,9 +748,11 @@ class MainHook : XposedModule() {
                 2 -> notification.flags =
                     notification.flags and Notification.FLAG_ONGOING_EVENT.inv()
             }
-            if (getConfig(ConfigStore.FEATURE_NOTIF_INSISTENT) == 1) {
-                notification.flags =
+            when (getConfig(ConfigStore.FEATURE_NOTIF_INSISTENT)) {
+                1 -> notification.flags =
                     notification.flags or Notification.FLAG_INSISTENT
+                2 -> notification.flags =
+                    notification.flags and Notification.FLAG_INSISTENT.inv()
             }
             if (getConfig(ConfigStore.FEATURE_NOTIF_MUTE) == 1) {
                 notification.sound = null
@@ -853,6 +898,10 @@ class MainHook : XposedModule() {
         1 -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         2 -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         3 -> ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+        4 -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
+        5 -> ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+        6 -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+        7 -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         else -> null
     }
 

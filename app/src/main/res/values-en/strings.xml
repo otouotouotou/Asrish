@@ -15,7 +15,6 @@
     <string name="label_fontsize">Font scale</string>
     <string name="label_dpi">DPI</string>
     <string name="label_locale">Language</string>
-    <string name="label_forceltr">Force layout direction to LTR</string>
     <string name="label_smallest_width">Smallest width</string>
     <string name="label_screenshot">Screenshot</string>
     <string name="label_screen_on">Keep screen on</string>
@@ -23,19 +22,25 @@
     <string name="label_mute">Mute</string>
     <string name="group_notifications">Notifications</string>
     <string name="label_notif_ongoing">Ongoing notification</string>
-    <string name="opt_notif_force_ongoing">Make ongoing</string>
-    <string name="opt_notif_prevent_ongoing">Don\'t make ongoing</string>
     <string name="label_notif_insistent">Insistent notifications</string>
     <string name="label_notif_mute">Mute notifications</string>
     <string name="label_exclude_recents">Exclude from recents</string>
 
     <!-- Options -->
     <string name="opt_default">Default</string>
+    <string name="opt_force_on">Force on</string>
+    <string name="opt_force_off">Force off</string>
     <string name="opt_portrait">Portrait</string>
     <string name="opt_landscape">Landscape</string>
-    <string name="opt_sensor">Auto-rotate (sensor)</string>
+    <string name="opt_sensor">Auto-rotate</string>
+    <string name="opt_reverse_portrait">Reverse portrait</string>
+    <string name="opt_reverse_landscape">Reverse landscape</string>
+    <string name="opt_sensor_portrait">Portrait (sensor)</string>
+    <string name="opt_sensor_landscape">Landscape (sensor)</string>
+    <string name="label_layout_direction">Layout direction lock</string>
+    <string name="opt_force_ltr">Force LTR</string>
     <string name="opt_fullscreen_on">Force fullscreen</string>
-    <string name="opt_fullscreen_immersive">Immersive (hide bars)</string>
+    <string name="opt_fullscreen_immersive">Immersive</string>
     <string name="opt_fullscreen_off">Prevent fullscreen</string>
     <string name="opt_font_standard">100% (standard)</string>
     <string name="opt_allow">Allow</string>
@@ -56,8 +61,13 @@
 
     <!-- 設定ファイルの書き出し / 読み込み -->
     <string name="label_settings_file">Settings file</string>
-    <string name="button_export">Export</string>
-    <string name="button_import">Import</string>
+    <string name="button_export">Export settings</string>
+    <string name="button_import">Import settings</string>
+    <string name="menu_sort_order">Sort order</string>
+    <string name="sort_name">By name</string>
+    <string name="sort_date">By date</string>
+    <string name="sort_size">By size</string>
+    <string name="menu_configured_first">Configured apps first</string>
     <string name="import_confirm_title">Import settings</string>
     <string name="import_confirm_message">Replace all current settings with the settings for %1$d app(s) in the file?</string>
     <string name="toast_exported">Exported</string>

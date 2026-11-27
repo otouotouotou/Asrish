@@ -92,6 +92,8 @@ class PerAppActivity : Activity() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(16), dp(16), dp(16))
+            // 画面背景 (v0.10.10 rev8〜): ライトは薄グレー、ダークは純黒
+            setBackgroundColor(getColor(R.color.window_bg))
         }
         applySystemBarInsets(root)
 
@@ -120,7 +122,11 @@ class PerAppActivity : Activity() {
                 getString(R.string.opt_default),
                 getString(R.string.opt_portrait),
                 getString(R.string.opt_landscape),
-                getString(R.string.opt_sensor)
+                getString(R.string.opt_sensor),
+                getString(R.string.opt_reverse_portrait),
+                getString(R.string.opt_reverse_landscape),
+                getString(R.string.opt_sensor_portrait),
+                getString(R.string.opt_sensor_landscape)
             )
         )
 
@@ -184,20 +190,44 @@ class PerAppActivity : Activity() {
             localeLabels, ConfigStore.LOCALE_TAGS.indices.toList()
         )
 
-        // Force LTR (言語が RTL のとき方向だけ LTR に固定する)
-        displayRows += switchRow(
-            ConfigStore.FEATURE_FORCE_LTR, getString(R.string.label_forceltr)
+        // レイアウト方向の固定 (ドロップダウン: デフォルト / LTR)。
+        // 保存値 1 = LTR は v0.10.5〜のスイッチ時代と互換。
+        // RTL 固定 (値 2) は v0.10.8beta で試験したが、Configuration が
+        // RTL になっても実レイアウトが反転しなかったため v0.10.9 で不採用
+        displayRows += spinnerRow(
+            ConfigStore.FEATURE_FORCE_LTR, getString(R.string.label_layout_direction),
+            listOf(
+                getString(R.string.opt_default),
+                getString(R.string.opt_force_ltr)
+            ),
+            listOf(0, 1)
         )
 
         content.addView(groupCard(getString(R.string.group_display), displayRows))
 
         // --- グループ: 画面と動作 ---
         val screenRows = mutableListOf<View>()
-        screenRows += switchRow(
-            ConfigStore.FEATURE_SCREEN_ON, getString(R.string.label_screen_on)
+        // 画面ON維持 (ドロップダウン: デフォルト / 強制ON / 強制OFF)。
+        // 保存値 1 はスイッチ時代と互換
+        screenRows += spinnerRow(
+            ConfigStore.FEATURE_SCREEN_ON, getString(R.string.label_screen_on),
+            listOf(
+                getString(R.string.opt_default),
+                getString(R.string.opt_force_on),
+                getString(R.string.opt_force_off)
+            ),
+            listOf(0, 1, 2)
         )
-        screenRows += switchRow(
-            ConfigStore.FEATURE_SHOW_WHEN_LOCKED, getString(R.string.label_show_when_locked)
+        // ロック画面表示 (ドロップダウン: デフォルト / 強制ON / 強制OFF)
+        screenRows += spinnerRow(
+            ConfigStore.FEATURE_SHOW_WHEN_LOCKED,
+            getString(R.string.label_show_when_locked),
+            listOf(
+                getString(R.string.opt_default),
+                getString(R.string.opt_force_on),
+                getString(R.string.opt_force_off)
+            ),
+            listOf(0, 1, 2)
         )
         // スクリーンショット (ドロップダウン。選択肢は短い表記)
         screenRows += spinnerRow(
@@ -213,18 +243,27 @@ class PerAppActivity : Activity() {
 
         // --- グループ: 通知 (v0.10.6〜) ---
         val notifRows = mutableListOf<View>()
-        // 継続通知 (ドロップダウン: デフォルト / 継続にする / 継続にしない)
+        // 継続通知 (ドロップダウン: デフォルト / 強制ON / 強制OFF)
         notifRows += spinnerRow(
             ConfigStore.FEATURE_NOTIF_ONGOING, getString(R.string.label_notif_ongoing),
             listOf(
                 getString(R.string.opt_default),
-                getString(R.string.opt_notif_force_ongoing),
-                getString(R.string.opt_notif_prevent_ongoing)
+                getString(R.string.opt_force_on),
+                getString(R.string.opt_force_off)
             ),
             listOf(0, 1, 2)
         )
-        notifRows += switchRow(
-            ConfigStore.FEATURE_NOTIF_INSISTENT, getString(R.string.label_notif_insistent)
+        // 通知を繰り返す (ドロップダウン: デフォルト / 強制ON /
+        // 強制OFF)。保存値 1 はスイッチ時代と互換
+        notifRows += spinnerRow(
+            ConfigStore.FEATURE_NOTIF_INSISTENT,
+            getString(R.string.label_notif_insistent),
+            listOf(
+                getString(R.string.opt_default),
+                getString(R.string.opt_force_on),
+                getString(R.string.opt_force_off)
+            ),
+            listOf(0, 1, 2)
         )
         notifRows += switchRow(
             ConfigStore.FEATURE_NOTIF_MUTE, getString(R.string.label_notif_mute)
@@ -359,6 +398,9 @@ class PerAppActivity : Activity() {
             text = label
             textSize = 16f
             maxLines = 2
+            // 項目名は明示色 (v0.10.10 rev11〜): ライトでテーマ任せだと
+            // 灰色がかって見えるため、ライトは真っ黒に固定する
+            setTextColor(getColor(R.color.label_text))
         }
         var defaultButton: Button? = null
         if (withDefaultButton) {
@@ -521,14 +563,16 @@ class PerAppActivity : Activity() {
     /**
      * セグメント項目の行を作る (画面の向き)。保存値はセグメントの
      * 位置そのもの。「デフォルト」がセグメントに含まれるので、
-     * デフォルトボタンは付けない。
+     * デフォルトボタンは付けない。選択肢は 4 つごとに段を分けて
+     * 並べる (向きは 6 項目あるため)。
      */
     private fun segmentedRow(feature: String, label: String, options: List<String>): View {
         val mainTextColor = TextView(this).currentTextColor
         val subTextColor = getColor(R.color.sub_text)
         val segments = mutableListOf<TextView>()
+        // 選択肢が増えたので 4 つごとに段を分ける (値の並びは変えない)
         val container = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
+            orientation = LinearLayout.VERTICAL
             background = GradientDrawable().apply {
                 setColor(0x00000000)
                 setStroke(dp(1), getColor(R.color.divider))
@@ -536,7 +580,14 @@ class PerAppActivity : Activity() {
             }
             setPadding(dp(2), dp(2), dp(2), dp(2))
         }
+        var row: LinearLayout? = null
         options.forEachIndexed { index, text ->
+            if (index % 4 == 0) {
+                row = LinearLayout(this).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                }
+                container.addView(row)
+            }
             val segment = TextView(this).apply {
                 this.text = text
                 gravity = Gravity.CENTER
@@ -553,7 +604,7 @@ class PerAppActivity : Activity() {
                 setOnClickListener { setDraft(feature, index, fromControl = false) }
             }
             segments += segment
-            container.addView(segment)
+            row?.addView(segment)
         }
         val showValue: (Int) -> Unit = { value ->
             segments.forEachIndexed { i, segment ->
@@ -574,6 +625,20 @@ class PerAppActivity : Activity() {
             }
         }
         showValue(draft[feature] ?: 0)
+        // 自動縮小はセグメントごとに効くため、このままだと文字サイズが
+        // バラバラになる。レイアウト後に一番小さいサイズへ全セグメントを
+        // 揃える (一番長い文言に合わせたサイズで統一される)
+        container.post {
+            val smallest = segments.minOf { it.textSize }
+            if (smallest > 0f) {
+                for (segment in segments) {
+                    segment.setAutoSizeTextTypeWithDefaults(
+                        TextView.AUTO_SIZE_TEXT_TYPE_NONE
+                    )
+                    segment.setTextSize(TypedValue.COMPLEX_UNIT_PX, smallest)
+                }
+            }
+        }
         val header = makeHeader(feature, label, withDefaultButton = false, null, showValue)
         return stackedRow(header, container)
     }

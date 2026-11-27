@@ -6,6 +6,12 @@
     <color name="divider">#262626</color>
     <!-- グループカードの背景 (純黒 #000000 の上にわずかに浮かせる) -->
     <color name="card_bg">#0D0D0D</color>
+    <!-- 画面全体の背景 (AMOLED 純黒) -->
+    <color name="window_bg">#000000</color>
+    <!-- 設定画面の項目名の文字色 (純黒背景向けに白) -->
+    <color name="label_text">#FFFFFF</color>
     <!-- 未適用マーク (●) の色 (純黒背景で目立つアンバー) -->
     <color name="pending_dot">#FFB300</color>
+    <!-- 設定済みアプリの行背景 (純黒の上に暗めのグレーを浮かせる) -->
+    <color name="configured_row_bg">#1E1E1E</color>
 </resources>
